@@ -17,6 +17,9 @@ import ohos.state_macro_manage.State
 import ohos.state_macro_manage.r
 import ohos.router.Router
 import ohos_app_cangjie_entry.util.ScreenUtil
+import ohos_app_cangjie_entry.component.ChatItemComponent
+import ohos_app_cangjie_entry.vo.ChatMessageVO
+import ohos_app_cangjie_entry.vo.ChatMessageVORole
 
 @Entry
 @Component
@@ -26,6 +29,10 @@ class EntryView {
     func build() {
         Row {
             Column {
+//                ChatItemComponent(chatMessageVO: ChatMessageVO("1", "Assistant", ChatMessageVORole.Assistant))
+                //
+                //                ChatItemComponent(chatMessageVO: ChatMessageVO("", "User", ChatMessageVORole.User))
+
                 Button(message)
                     .onClick {
                         evt =>
@@ -34,6 +41,9 @@ class EntryView {
                     }
                     .fontSize(40)
                     .height(80)
+
+//                ChatItemComponent()
+
             }.width(100.percent)
         }.height(100.percent)
     }
