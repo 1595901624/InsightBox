@@ -15,6 +15,7 @@ import ohos.state_macro_manage.Entry
 import ohos.state_macro_manage.Component
 import ohos.state_macro_manage.State
 import ohos.state_macro_manage.r
+import ohos.router.Router
 
 @Entry
 @Component
@@ -24,9 +25,14 @@ class EntryView {
     func build() {
         Row {
             Column {
-                Button(message).onClick {
-                    evt => AppLog.info("Hello Cangjie")
-                }.fontSize(40).height(80)
+                Button(message)
+                    .onClick {
+                        evt =>
+                        AppLog.info("Hello Cangjie")
+                        Router.push(url: "ChatPage")
+                    }
+                    .fontSize(40)
+                    .height(80)
             }.width(100.percent)
         }.height(100.percent)
     }

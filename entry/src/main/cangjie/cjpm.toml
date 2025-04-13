@@ -25,7 +25,7 @@
   link-option = ""
   name = "ohos_app_cangjie_entry"
   output-type = "dynamic"
-  src-dir = "."
+  src-dir = "./insightbox"
   target-dir = ""
   version = "1.0.0"
   [package.package-configuration]
