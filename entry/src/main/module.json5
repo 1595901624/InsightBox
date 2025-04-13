@@ -5,17 +5,15 @@
     "description": "$string:module_desc",
     "mainElement": "EntryAbility",
     "deviceTypes": [
-      "phone",
-      "tablet",
-      "2in1"
+      "phone"
     ],
     "deliveryWithInstall": true,
     "installationFree": false,
-    "pages": "$profile:main_pages",
+    "srcEntry": "ohos_app_cangjie_entry.MyAbilityStage",
     "abilities": [
       {
         "name": "EntryAbility",
-        "srcEntry": "./ets/entryability/EntryAbility.ets",
+        "srcEntry": "ohos_app_cangjie_entry.MainAbility",
         "description": "$string:EntryAbility_desc",
         "icon": "$media:layered_image",
         "label": "$string:EntryAbility_label",
@@ -32,20 +30,6 @@
             ]
           }
         ]
-      }
-    ],
-    "extensionAbilities": [
-      {
-        "name": "EntryBackupAbility",
-        "srcEntry": "./ets/entrybackupability/EntryBackupAbility.ets",
-        "type": "backup",
-        "exported": false,
-        "metadata": [
-          {
-            "name": "ohos.extension.backup",
-            "resource": "$profile:backup_config"
-          }
-        ],
       }
     ]
   }
