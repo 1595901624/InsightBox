@@ -16,6 +16,7 @@ import ohos.state_macro_manage.Component
 import ohos.state_macro_manage.State
 import ohos.state_macro_manage.r
 import ohos.router.Router
+import ohos_app_cangjie_entry.util.ScreenUtil
 
 @Entry
 @Component
@@ -35,5 +36,10 @@ class EntryView {
                     .height(80)
             }.width(100.percent)
         }.height(100.percent)
+    }
+
+    public func aboutToAppear() {
+        let x = ScreenUtil.getScreenWidthPx()
+        AppLog.info("Screen width in px: ${x.value}")
     }
 }
