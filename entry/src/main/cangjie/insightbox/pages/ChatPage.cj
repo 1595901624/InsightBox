@@ -11,12 +11,19 @@ import cj_res_entry.*
 import ohos.resource_manager.*
 import ohos.router.Router
 import std.collection.ArrayList
+import ohos_app_cangjie_entry.component.ChatItemComponent
+import ohos_app_cangjie_entry.vo.ChatMessageVO
+import ohos_app_cangjie_entry.vo.ChatMessageVORole
 
 @Entry
 @Component
 public class ChatPage {
     func build() {
         RelativeContainer {
+            ChatItemComponent(chatMessageVO: ChatMessageVO("1", "Assistant", ChatMessageVORole.Assistant))
+
+            ChatItemComponent(chatMessageVO: ChatMessageVO("2", "User", ChatMessageVORole.User))
+
             TextInput(placeholder: "聊点什么吧")
                 .width(100.percent)
                 .height(60)
