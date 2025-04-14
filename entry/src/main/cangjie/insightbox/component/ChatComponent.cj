@@ -12,6 +12,7 @@ import ohos_app_cangjie_entry.datasource.ChatDataSource
 import ohos_app_cangjie_entry.vo.ChatMessageVO
 import ohos_app_cangjie_entry.vo.ChatMessageVORole
 
+@Component
 public class ChatComponent {
     @State
     var chatDataSource: ChatDataSource = ChatDataSource(ArrayList<ChatMessageVO>())
@@ -32,29 +33,19 @@ public class ChatComponent {
 
     func build() {
         RelativeContainer {
-            //            List() {
-            //                LazyForEach(chatDataSource,
-            //                    itemGeneratorFunc: { item: ChatMessageVO, index: Int64 =>
-            //                    }
-            //                )
-            //            }
-            Column {
-                //                LazyForEach(chatDataSource, itemGeneratorFunc: {stu: ChatMessageVO, idx: Int64 =>
-                //                    Column {
-                //                        Text(stu.name)
-                //                    }
-                //                })
-
-//                LazyForEach(
-//                    chatDataSource,
-//                    itemGeneratorFunc: {
-//                        item: ChatMessageVO, index: Int64 => ()
-//                    },
-//                    keyGeneratorFunc: {
-//                        item: ChatMessageVO, index: Int64 => return "${item.id}"
-//                    }
-//                )
-            }.height(400.0)
+            List() {
+                LazyForEach(
+                    chatDataSource,
+                    itemGeneratorFunc: {
+                        item: ChatMessageVO, index: Int64 => ListItem() {
+                            ChatItemComponent(chatMessageVO: item)
+                        }
+                    },
+                    keyGeneratorFunc: {
+                        item: ChatMessageVO, index: Int64 => return "${item.id}"
+                    }
+                )
+            }
         }.width(100.percent).height(100.percent)
     }
 }
