@@ -1,0 +1,123 @@
+/**
+ * Created on 2025/4/13
+ */
+package ohos_app_cangjie_entry.component
+
+import ohos.base.*
+import ohos.component.*
+import ohos.state_manage.*
+import ohos.state_macro_manage.*
+import std.collection.*
+import ohos_app_cangjie_entry.datasource.ChatDataSource
+import ohos_app_cangjie_entry.vo.ChatMessageVO
+import ohos_app_cangjie_entry.vo.ChatMessageVORole
+
+/* ===== Emitted by MacroCall @Component in chatcomponent.cj:15:1 ===== */
+/* 15.1 */public class ChatComponent <: CustomView {
+/* 15.2 */    
+/* 15.3 */    
+/* 15.4 */    private var stateVarDecl_chatDataSource_: ObservedProperty < ChatDataSource >= ObservedProperty < ChatDataSource >("stateVarDecl_chatDataSource_", ChatDataSource(ArrayList < ChatMessageVO >()))
+/* 15.5 */    
+/* 15.6 */    
+/* 15.7 */    private mut prop chatDataSource: ChatDataSource {
+/* 15.8 */        get() {
+/* 15.9 */            return this.stateVarDecl_chatDataSource_.get()
+/* 15.10 */        }
+/* 15.11 */        set(v) {
+/* 15.12 */            this.stateVarDecl_chatDataSource_.set(v)
+/* 15.13 */        }
+/* 15.14 */    }
+/* 15.15 */    
+/* 15.16 */    
+/* 15.17 */    public func aboutToAppear() {
+/* 15.18 */        var data = ArrayList < ChatMessageVO >()
+/* 15.19 */        for(i in 0 .. 50) {
+/* 15.20 */            data.append(ChatMessageVO("id_${i}", "content_${i}", if(i % 2 == 0) {
+/* 15.21 */                ChatMessageVORole.User
+/* 15.22 */            }
+/* 15.23 */            else {
+/* 15.24 */                ChatMessageVORole.Assistant
+/* 15.25 */            }
+/* 15.26 */            ))
+/* 15.27 */        }
+/* 15.28 */        chatDataSource = ChatDataSource(data)
+/* 15.29 */    }
+/* 15.30 */    
+/* 15.31 */    
+/* 15.32 */    
+/* 15.33 */    public func build() {
+/* 15.34 */        
+/* 15.35 */        this.observeComponentCreation({ elmtId, isInitialRender =>
+/* 15.36 */            RelativeContainer { this.observeComponentCreation({ elmtId, isInitialRender => List() { this.observeComponentCreation({ elmtId, isInitialRender => if(! isInitialRender) {
+/* 15.37 */                return FakeComponent()
+/* 15.38 */            }
+/* 15.39 */            
+/* 15.40 */            LazyForEach().create(1, this, chatDataSource, itemGeneratorFunc: { item: ChatMessageVO, index: Int64 => this.observeComponentCreation({ elmtId, isInitialRender => ListItem() { ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
+/* 15.41 */                CustomView.create(ChatItemComponent(this, chatMessageVO: ObservedProperty("", item)))
+/* 15.42 */            ViewStackProcessor.StopGetAccessRecording() } }) }, keyGeneratorFunc: { item: ChatMessageVO, index: Int64 => return "${item.id}" }) }) } }) }.width(100.percent).height(100.percent)
+/* 15.43 */        })
+/* 15.44 */        
+/* 15.45 */        ()
+/* 15.46 */        
+/* 15.47 */    }
+/* 15.48 */    
+/* 15.49 */    
+/* 15.50 */    public init(parent: Option < CustomView >, chatDataSource!: Option < ObservedProperty < ChatDataSource >>= None, localStorage!: Option < LocalStorage >= None) {
+/* 15.51 */        super(parent, localStorage)
+/* 15.52 */        
+/* 15.53 */        
+/* 15.54 */        match(chatDataSource) {
+/* 15.55 */            case Some(v) => this.stateVarDecl_chatDataSource_ = ObservedProperty < ChatDataSource >("stateVarDecl_chatDataSource_", v.get())
+/* 15.56 */            case _ =>()
+/* 15.57 */        }
+/* 15.58 */        
+/* 15.59 */        
+/* 15.60 */        this.stateVarDecl_chatDataSource_.subscribeEx(this)
+/* 15.61 */        
+/* 15.62 */        SubscriberManager.getInstance().add(this)
+/* 15.63 */        
+/* 15.64 */        
+/* 15.65 */        registerSelf()
+/* 15.66 */        parent?.addChildById(id(), this)
+/* 15.67 */    }
+/* 15.68 */    
+/* 15.69 */    
+/* 15.70 */    public override func aboutToBeDeleted() {
+/* 15.71 */        
+/* 15.72 */        this.stateVarDecl_chatDataSource_.unsubscribeEx(this)
+/* 15.73 */        
+/* 15.74 */        SubscriberManager.getInstance().delete(this)
+/* 15.75 */        this.aboutToBeDeletedInternal()
+/* 15.76 */    }
+/* 15.77 */    
+/* 15.78 */    
+/* 15.79 */    func updateWithValueParams(chatDataSource!: Option < ChatDataSource >= Option < ChatDataSource >.None): Unit {
+/* 15.80 */        
+/* 15.81 */        match(chatDataSource) {
+/* 15.82 */            case Some(v) => this.chatDataSource = v
+/* 15.83 */            case _ =>()
+/* 15.84 */        }
+/* 15.85 */        
+/* 15.86 */    }
+/* 15.87 */    
+/* 15.88 */    
+/* 15.89 */    public func rerender() {
+/* 15.90 */        this.updateDirtyElements()
+/* 15.91 */    }
+/* 15.92 */    
+/* 15.93 */    
+/* 15.94 */    public func purgeVariableDependenciesOnElmtId(rmElmtId: Int64) {
+/* 15.95 */        
+/* 15.96 */        this.stateVarDecl_chatDataSource_.purgeDependencyOnElmtId(rmElmtId)
+/* 15.97 */        
+/* 15.98 */    }
+/* 15.99 */    
+/* 15.100 */    
+/* 15.101 */    public func forceRerender(deep!: Bool = false) {
+/* 15.102 */        this.forceCompleteRerender(deep)
+/* 15.103 */    }
+/* 15.104 */    
+/* 15.105 */    
+/* 15.106 */}
+/* 15.107 */
+/* ===== End of the Emit ===== */

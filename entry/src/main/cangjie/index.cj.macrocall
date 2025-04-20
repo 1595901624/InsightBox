@@ -1,0 +1,75 @@
+package ohos_app_cangjie_entry
+
+internal import ohos.base.LengthProp
+internal import ohos.component.Column
+internal import ohos.component.Row
+internal import ohos.component.Button
+internal import ohos.component.Text
+internal import ohos.component.CustomView
+internal import ohos.component.CJEntry
+internal import ohos.component.loadNativeView
+internal import ohos.state_manage.SubscriberManager
+internal import ohos.state_manage.ObservedProperty
+internal import ohos.state_manage.LocalStorage
+import ohos.state_macro_manage.Entry
+import ohos.state_macro_manage.Component
+import ohos.state_macro_manage.State
+import ohos.state_macro_manage.r
+import ohos_app_cangjie_entry.pages
+
+/* ===== Emitted by MacroCall @Entry in index.cj:20:1 ===== */
+/* 20.1 */class EntryView <: CustomView {
+/* 20.2 */    private var stateVarDecl_message_: ObservedProperty < String >= ObservedProperty < String >("stateVarDecl_message_", "Hello Cangjie")
+/* 20.3 */    private mut prop message: String {
+/* 20.4 */        get() {
+/* 20.5 */            return this.stateVarDecl_message_.get()
+/* 20.6 */        }
+/* 20.7 */        set(v) {
+/* 20.8 */            this.stateVarDecl_message_.set(v)
+/* 20.9 */        }
+/* 20.10 */    }
+/* 20.11 */    public func build() {
+/* 20.12 */        this.observeComponentCreation({ elmtId, isInitialRender => Row { this.observeComponentCreation({ elmtId, isInitialRender => Column { this.observeComponentCreation({ elmtId, isInitialRender => Button(message).onClick { evt => AppLog.info("Hello Cangjie") }.fontSize(40).height(80) }) }.width(100.percent) }) }.height(100.percent) })
+/* 20.13 */        ()
+/* 20.14 */    }
+/* 20.15 */    public init(parent: Option < CustomView >, message!: Option < ObservedProperty < String >>= None, localStorage!: Option < LocalStorage >= None) {
+/* 20.16 */        super(parent, localStorage)
+/* 20.17 */        match(message) {
+/* 20.18 */            case Some(v) => this.stateVarDecl_message_ = ObservedProperty < String >("stateVarDecl_message_", v.get())
+/* 20.19 */            case _ =>()
+/* 20.20 */        }
+/* 20.21 */        this.stateVarDecl_message_.subscribeEx(this)
+/* 20.22 */        SubscriberManager.getInstance().add(this)
+/* 20.23 */        registerSelf()
+/* 20.24 */        parent?.addChildById(id(), this)
+/* 20.25 */    }
+/* 20.26 */    public override func aboutToBeDeleted() {
+/* 20.27 */        this.stateVarDecl_message_.unsubscribeEx(this)
+/* 20.28 */        SubscriberManager.getInstance().delete(this)
+/* 20.29 */        this.aboutToBeDeletedInternal()
+/* 20.30 */    }
+/* 20.31 */    func updateWithValueParams(message!: Option < String >= Option < String >.None): Unit {
+/* 20.32 */        match(message) {
+/* 20.33 */            case Some(v) => this.message = v
+/* 20.34 */            case _ =>()
+/* 20.35 */        }
+/* 20.36 */    }
+/* 20.37 */    public func rerender() {
+/* 20.38 */        this.updateDirtyElements()
+/* 20.39 */    }
+/* 20.40 */    public func purgeVariableDependenciesOnElmtId(rmElmtId: Int64) {
+/* 20.41 */        this.stateVarDecl_message_.purgeDependencyOnElmtId(rmElmtId)
+/* 20.42 */    }
+/* 20.43 */    public func forceRerender(deep!: Bool = false) {
+/* 20.44 */        this.forceCompleteRerender(deep)
+/* 20.45 */    }
+/* 20.46 */}
+/* 20.47 */
+/* 20.48 */public func appEntry_0(): Bool {
+/* 20.49 */    let view = EntryView(Option < CustomView >.None)
+/* 20.50 */    loadNativeView(view)
+/* 20.51 */}
+/* 20.52 */
+/* 20.53 */let a_p_1 = CJEntry.getInstance().registerEntry("EntryView", appEntry_0)
+/* 20.54 */
+/* ===== End of the Emit ===== */
