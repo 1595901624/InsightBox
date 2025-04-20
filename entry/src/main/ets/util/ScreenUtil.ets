@@ -9,14 +9,14 @@ class ScreenUtil {
   constructor() {
   }
 
-  /**
-   * 获取屏幕Rect，单位Px
-   *
-   * @returns 返回屏幕宽度(Px)
-   */
-  async getScreenRect() {
-    return await display.getDefaultDisplaySync().getAvailableArea();
-  }
+  // /**
+  //  * 获取屏幕Rect，单位Px
+  //  *
+  //  * @returns 返回屏幕宽度(Px)
+  //  */
+  // async getScreenRect() {
+  //   return await display.getDefaultDisplaySync().getAvailableArea();
+  // }
 
   /**
    * 获取屏幕宽度，单位Px

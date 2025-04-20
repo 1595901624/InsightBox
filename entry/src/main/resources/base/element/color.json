@@ -3,6 +3,18 @@
     {
       "name": "start_window_background",
       "value": "#FFFFFF"
+    },
+    {
+      "name": "chat_input_background",
+      "value": "#EFF2F3"
+    },
+    {
+      "name": "chat_input_button_background",
+      "value": "#E3E6E7"
+    },
+    {
+      "name": "chat_input_caret",
+      "value": "#000000"
     }
   ]
 }
