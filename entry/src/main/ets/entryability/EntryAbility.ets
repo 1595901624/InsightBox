@@ -2,6 +2,7 @@ import { AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.Ab
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
 import { HMRouterMgr } from '@hadss/hmrouter';
+import { GlobalUtil } from '../util/GlobalUtil';
 
 const DOMAIN = 0x0000;
 
@@ -21,6 +22,8 @@ export default class EntryAbility extends UIAbility {
   onWindowStageCreate(windowStage: window.WindowStage): void {
     // Main window is created, set main page for this ability
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
+    windowStage.getMainWindowSync().setWindowLayoutFullScreen(true)
+    GlobalUtil.init(this.context, windowStage);
 
     windowStage.loadContent('pages/Index', (err) => {
       if (err.code) {
