@@ -1,0 +1,6 @@
+{
+  "scanDir": [
+    "src/main/ets/pages",
+    "src/main/ets/widgets"
+  ]
+}

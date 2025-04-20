@@ -1,23 +1,39 @@
+import { HMDefaultGlobalAnimator, HMNavigation, HMRouterMgr } from '@hadss/hmrouter';
+import { AttributeUpdater } from '@kit.ArkUI';
+import { PageConstant } from '../constant/PageConstant';
+
 @Entry
 @Component
 struct Index {
-  @State message: string = 'Hello World';
+  modifier: AttributeUpdater<NavigationAttribute> = new MyNavModifier();
+
+  aboutToAppear(): void {
+
+  }
+
+  onPageShow(): void {
+
+  }
 
   build() {
-    RelativeContainer() {
-      Text(this.message)
-        .id('HelloWorld')
-        .fontSize($r('app.float.page_text_font_size'))
-        .fontWeight(FontWeight.Bold)
-        .alignRules({
-          center: { anchor: '__container__', align: VerticalAlign.Center },
-          middle: { anchor: '__container__', align: HorizontalAlign.Center }
-        })
-        .onClick(() => {
-          this.message = 'Welcome';
-        })
+    Column() {
+      // 使用HMNavigation容器
+      HMNavigation({
+        navigationId: 'mainNavigation', homePageUrl: PageConstant.PAGE_CHAT,
+        options: {
+          standardAnimator: HMDefaultGlobalAnimator.STANDARD_ANIMATOR,
+          dialogAnimator: HMDefaultGlobalAnimator.DIALOG_ANIMATOR,
+          modifier: this.modifier
+        }
+      })
     }
     .height('100%')
     .width('100%')
+  }
+}
+
+class MyNavModifier extends AttributeUpdater<NavigationAttribute> {
+  initializeModifier(instance: NavigationAttribute): void {
+    instance.hideNavBar(true);
   }
 }
