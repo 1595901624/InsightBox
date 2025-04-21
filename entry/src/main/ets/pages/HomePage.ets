@@ -3,6 +3,7 @@ import { PageConstant } from '../constant/PageConstant';
 import { ChatInputView } from '../widget/ChatInputView';
 import { SafeAreaLayout } from '../widget/SafeAreaLayout';
 import { LengthMetrics } from '@kit.ArkUI';
+import { SSEGateway } from '../http/gateway/SSEGateway';
 
 @HMRouter({ pageUrl: PageConstant.PAGE_HOME })
 @ComponentV2
@@ -47,6 +48,8 @@ export struct HomePage {
   }
 
   aboutToAppear(): void {
+    const sse = new SSEGateway()
+    sse.postStreamRequest("http://xxxxxxxx:3000/v1/chat/completions")
   }
 
   /**

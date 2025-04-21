@@ -30,7 +30,7 @@ export struct ChatInputView {
         .backgroundColor(Color.Transparent)
         .caretColor($r('app.color.chat_input_caret'))
 
-
+      this.EndButtonBuilder()
     }
     .backgroundColor($r('app.color.chat_input_background'))
     .height(80)

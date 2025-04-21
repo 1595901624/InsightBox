@@ -34,6 +34,11 @@
         ]
       }
     ],
+    "requestPermissions": [
+      {
+        "name": "ohos.permission.INTERNET"
+      }
+    ],
     "extensionAbilities": [
       {
         "name": "EntryBackupAbility",
@@ -45,7 +50,7 @@
             "name": "ohos.extension.backup",
             "resource": "$profile:backup_config"
           }
-        ],
+        ]
       }
     ]
   }
