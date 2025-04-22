@@ -1,5 +1,5 @@
-import { LengthMetrics } from "@ohos.arkui.node"
-import { ChatStatus } from "../model/ChatStatus"
+import { LengthMetrics } from '@ohos.arkui.node'
+import { ChatStatus } from '../model/ChatStatus'
 
 /**
  * 聊天输入组件
@@ -13,15 +13,17 @@ export struct ChatInputView {
   /**
    * 点击发送按钮的回调
    */
-  @Event onSendClick?: () => void
+  @Event onSendClick?: (msg: string) => void
   /**
    * 点击停止按钮的回调
    */
   @Event onStopClick?: () => void
+  @Local private inputText: string = ''
 
   build() {
     RelativeContainer() {
       TextInput({
+        text: $$this.inputText,
         placeholder: $r('app.string.chat_input_hint'),
       })
         .height(50)
@@ -61,7 +63,7 @@ export struct ChatInputView {
           }
         })
         .onClick(() => {
-          this.onSendClick?.()
+          this.onStopClick?.()
         })
     } else {
       Image($r('app.media.icon_svg_up'))
@@ -86,7 +88,7 @@ export struct ChatInputView {
           }
         })
         .onClick(() => {
-          this.onStopClick?.()
+          this.onSendClick?.(this.inputText)
         })
     }
   }

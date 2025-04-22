@@ -1,4 +1,4 @@
-import { ChatRole } from "./ChatRole";
+import { ChatRole } from "../../../model/ChatRole";
 
 /**
  * 聊天信息

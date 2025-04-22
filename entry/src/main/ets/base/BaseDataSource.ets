@@ -14,6 +14,15 @@ export class BasicDataSource<T> implements IDataSource {
     return this.dataArray;
   }
 
+  /**
+   * 向数据源中添加数据,插入到最后一位
+   * @param data
+   */
+  public insertData(data: T) {
+    this.dataArray.push(data);
+    this.notifyDataAdd(this.dataArray.length - 1);
+  }
+
   public addData(index: number, data: T): void {
     this.dataArray.splice(index, 0, data);
     this.notifyDataAdd(index);
@@ -33,11 +42,6 @@ export class BasicDataSource<T> implements IDataSource {
     this.dataArray[index] = data
     this.notifyDataChange(index);
   }
-
-  // public top(index: number, data: T) {
-  //   this.dataArray.splice(index, 1)
-  //   this.dataArray.splice(0, 0, data);
-  // }
 
   public pushList(list: T[]): void {
     this.dataArray.push(...list);

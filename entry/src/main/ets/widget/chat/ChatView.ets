@@ -1,9 +1,9 @@
-import { AssistantItemComponent } from './commponent/AssistantItemComponent';
-import { SystemItemComponent } from './commponent/SystemItemComponent';
-import { UserItemComponent } from './commponent/UserItemComponent';
-import { ChatDataSource } from './datasource/ChatDataSource';
+import { AssistantItemComponent } from '../../component/AssistantItemComponent';
+import { SystemItemComponent } from '../../component/SystemItemComponent';
+import { UserItemComponent } from '../../component/UserItemComponent';
+import { ChatDataSource } from '../../datasource/ChatDataSource';
 import { BaseChatMessage } from './mode/BaseChatMessage';
-import { ChatRole } from './mode/ChatRole';
+import { ChatRole } from '../../model/ChatRole';
 import { LengthMetrics } from '@kit.ArkUI';
 
 @ComponentV2

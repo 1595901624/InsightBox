@@ -1,4 +1,4 @@
-import { HMRouter } from '@hadss/hmrouter';
+import { HMRouter, HMRouterMgr } from '@hadss/hmrouter';
 import { PageConstant } from '../constant/PageConstant';
 import { ChatInputView } from '../widget/ChatInputView';
 import { SafeAreaLayout } from '../widget/SafeAreaLayout';
@@ -24,7 +24,16 @@ export struct HomePage {
               end: LengthMetrics.vp(16),
             })
 
-          ChatInputView()
+          ChatInputView({
+            onSendClick: () => {
+              HMRouterMgr.push({
+                pageUrl: PageConstant.PAGE_CHAT
+              })
+            },
+            onStopClick: () => {
+
+            }
+          })
             .padding({
               start: LengthMetrics.vp(16),
               end: LengthMetrics.vp(16),
