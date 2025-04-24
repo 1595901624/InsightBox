@@ -6,11 +6,13 @@ import { ChatMessage } from '../model/ChatMessage';
 import { ChatInputView } from '../widget/ChatInputView';
 import { SafeAreaLayout } from '../widget/SafeAreaLayout';
 import { LengthMetrics } from '@kit.ArkUI';
+import { SSEGateway } from '../http/gateway/SSEGateway';
 
 @HMRouter({ pageUrl: PageConstant.PAGE_CHAT })
 @ComponentV2
 export struct ChatPage {
   private dataSource: ChatDataSource = new ChatDataSource();
+  private sseGateway: SSEGateway = new SSEGateway();
 
   build() {
     SafeAreaLayout() {
