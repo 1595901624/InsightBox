@@ -2,23 +2,23 @@
   "float": [
     {
       "name": "font_size_chat_message_medium",
-      "value": "18"
-    },
-    {
-      "name": "font_size_chat_message_large",
-      "value": "20"
-    },
-    {
-      "name": "font_size_chat_message_small",
       "value": "16"
     },
     {
+      "name": "font_size_chat_message_large",
+      "value": "18"
+    },
+    {
+      "name": "font_size_chat_message_small",
+      "value": "14"
+    },
+    {
       "name": "font_size_chat_message_xlarge",
-      "value": "22"
+      "value": "20"
     },
     {
       "name": "font_size_chat_message_xxlarge",
-      "value": "24"
+      "value": "22"
     },
     {
       "name": "font_size_title",

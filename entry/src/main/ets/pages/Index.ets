@@ -1,4 +1,4 @@
-import { HMDefaultGlobalAnimator, HMNavigation, HMRouterMgr } from '@hadss/hmrouter';
+import { HMDefaultGlobalAnimator, HMNavigation } from '@hadss/hmrouter';
 import { AttributeUpdater } from '@kit.ArkUI';
 import { PageConstant } from '../constant/PageConstant';
 
@@ -19,7 +19,7 @@ struct Index {
     Column() {
       // 使用HMNavigation容器
       HMNavigation({
-        navigationId: 'mainNavigation', homePageUrl: PageConstant.PAGE_HOME,
+        navigationId: 'mainNavigation', homePageUrl: PageConstant.PAGE_CHAT,
         options: {
           standardAnimator: HMDefaultGlobalAnimator.STANDARD_ANIMATOR,
           dialogAnimator: HMDefaultGlobalAnimator.DIALOG_ANIMATOR,

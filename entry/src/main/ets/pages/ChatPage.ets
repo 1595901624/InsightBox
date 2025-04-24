@@ -15,7 +15,6 @@ export struct ChatPage {
   build() {
     SafeAreaLayout() {
       RelativeContainer() {
-
         List() {
           LazyForEach(this.dataSource, (item: ChatMessage, index: number) => {
             ListItem() {
@@ -27,6 +26,14 @@ export struct ChatPage {
             return JSON.stringify(item) + index
           })
         }
+        .padding({
+          start: LengthMetrics.vp(16),
+          end: LengthMetrics.vp(16),
+        })
+        .divider({
+          color: Color.Transparent,
+          strokeWidth: 10,
+        })
         .scrollBar(BarState.Off)
         .alignRules({
           bottom: {

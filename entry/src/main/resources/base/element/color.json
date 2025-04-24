@@ -15,6 +15,14 @@
     {
       "name": "chat_input_caret",
       "value": "#000000"
+    },
+    {
+      "name": "chat_bubble_user_background",
+      "value": "#FDD3E8FF"
+    },
+    {
+      "name": "chat_bubble_text_color",
+      "value": "$color:black_80"
     }
   ]
 }
