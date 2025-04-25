@@ -5,7 +5,7 @@ import { ChatDataSource } from '../datasource/ChatDataSource';
 import { ChatMessage } from '../model/ChatMessage';
 import { ChatInputView } from '../widget/ChatInputView';
 import { SafeAreaLayout } from '../widget/SafeAreaLayout';
-import { LengthMetrics } from '@kit.ArkUI';
+import { KeyboardAvoidMode, LengthMetrics } from '@kit.ArkUI';
 import { SSEGateway } from '../http/gateway/SSEGateway';
 
 @HMRouter({ pageUrl: PageConstant.PAGE_CHAT })
@@ -17,6 +17,14 @@ export struct ChatPage {
   // 模型名称
   @Local private modelName: ResourceStr = $r('app.string.app_name')
   private scroller = new ListScroller()
+
+  aboutToAppear(): void {
+    this.getUIContext().setKeyboardAvoidMode(KeyboardAvoidMode.RESIZE);
+  }
+
+  aboutToDisappear(): void {
+    this.getUIContext().setKeyboardAvoidMode(KeyboardAvoidMode.OFFSET);
+  }
 
   build() {
     SafeAreaLayout() {
@@ -57,6 +65,9 @@ export struct ChatPage {
         .padding({
           start: LengthMetrics.vp(16),
           end: LengthMetrics.vp(16),
+        })
+        .margin({
+          bottom: LengthMetrics.vp(16)
         })
         .alignRules({
           top: {
