@@ -14,6 +14,9 @@ export struct ChatPage {
   private dataSource: ChatDataSource = new ChatDataSource();
   private sseGateway: SSEGateway = new SSEGateway();
   @Local private showSideBar: boolean = false;
+  // 模型名称
+  @Local private modelName: ResourceStr = $r('app.string.app_name')
+  private scroller = new ListScroller()
 
   build() {
     SafeAreaLayout() {
@@ -21,16 +24,28 @@ export struct ChatPage {
         this.TitleBar()
 
         Column() {
-          List() {
+          List({
+            scroller: this.scroller
+          }) {
             LazyForEach(this.dataSource, (item: ChatMessage, index: number) => {
               ListItem() {
                 ChatItemComponent({
                   message: item,
                 })
               }
+              .onSizeChange((_oldValue, newValue) => {
+                if (this.dataSource.isLastMessage(index)) {
+                  return
+                }
+                // 自动滚动到底部
+                if (newValue.height && newValue.height > 0) {
+                  this.scroller.scrollEdge(Edge.Bottom)
+                }
+              })
             }, (item: ChatMessage, index: number) => {
               return JSON.stringify(item) + index
             })
+
           }
           .scrollBar(BarState.Off)
           .divider({
@@ -85,9 +100,10 @@ export struct ChatPage {
   @Builder
   TitleBar() {
     RelativeContainer() {
-      Text($r('app.string.app_name'))
+      Text(this.modelName)
         .fontWeight(FontWeight.Bold)
         .fontSize($r('app.float.font_size_title'))
+        .id('title')
         .alignRules({
           center: {
             align: VerticalAlign.Center,
@@ -98,6 +114,23 @@ export struct ChatPage {
             anchor: '__container__',
           },
         })
+
+      Image($r('app.media.icon_arrow_end'))
+        .width(16)
+        .height(16)
+        .margin({
+          start: LengthMetrics.vp(2)
+        })
+        .alignRules({
+          start: {
+            align: HorizontalAlign.End,
+            anchor: 'title',
+          },
+          center: {
+            align: VerticalAlign.Center,
+            anchor: '__container__',
+          },
+        })
     }
     .id('title_bar')
     .height($r('app.float.title_bar_height'))
@@ -105,6 +138,6 @@ export struct ChatPage {
 
   @Builder
   SideBar() {
-    
+
   }
 }

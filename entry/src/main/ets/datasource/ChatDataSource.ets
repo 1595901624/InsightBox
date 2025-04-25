@@ -9,6 +9,13 @@ export class ChatDataSource extends BasicDataSource<ChatMessage> {
 
 
   /**
+   * 判断是否是最后一条信息
+   */
+  isLastMessage(index: number): boolean {
+    return index === this.getDataList().length - 1
+  }
+
+  /**
    * 添加用户消息
    */
   addUserMessage(msg: string) {
