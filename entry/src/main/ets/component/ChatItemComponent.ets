@@ -12,7 +12,9 @@ export struct ChatItemComponent {
     if (this.message.role === ChatRole.System) {
       SystemItemComponent()
     } else if (this.message.role === ChatRole.Assistant) {
-      AssistantItemComponent()
+      AssistantItemComponent({
+        message: this.message
+      })
     } else if (this.message.role === ChatRole.User) {
       UserItemComponent({
         message: this.message

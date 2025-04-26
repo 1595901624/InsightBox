@@ -7,18 +7,22 @@ import { ChatInputView } from '../widget/ChatInputView';
 import { SafeAreaLayout } from '../widget/SafeAreaLayout';
 import { KeyboardAvoidMode, LengthMetrics } from '@kit.ArkUI';
 import { SSEGateway } from '../http/gateway/SSEGateway';
+import { SSEListener } from '../http/gateway/SSEListener';
+import { LLMChunk } from '../model/LLMChunk';
 
 @HMRouter({ pageUrl: PageConstant.PAGE_CHAT })
 @ComponentV2
 export struct ChatPage {
-  private dataSource: ChatDataSource = new ChatDataSource();
-  private sseGateway: SSEGateway = new SSEGateway();
   @Local private showSideBar: boolean = false;
   // 模型名称
   @Local private modelName: ResourceStr = $r('app.string.app_name')
   private scroller = new ListScroller()
+  private dataSource: ChatDataSource = new ChatDataSource();
+  private sseGateway: SSEGateway = new SSEGateway();
+  private responseMsg: string = ""
 
   aboutToAppear(): void {
+    this.sseGateway.setListener(this.sseListener)
     this.getUIContext().setKeyboardAvoidMode(KeyboardAvoidMode.RESIZE);
   }
 
@@ -42,7 +46,7 @@ export struct ChatPage {
                 })
               }
               .onSizeChange((_oldValue, newValue) => {
-                if (this.dataSource.isLastMessage(index)) {
+                if (!this.dataSource.isLastMessage(index)) {
                   return
                 }
                 // 自动滚动到底部
@@ -83,7 +87,7 @@ export struct ChatPage {
         ChatInputView({
           onSendClick: (msg: string) => {
             this.dataSource.addUserMessage(msg)
-            this.dataSource.addAssistantMessage('正在生成中...')
+            this.sendMessage(msg)
           }
         })
           .id('chat_input')
@@ -150,5 +154,31 @@ export struct ChatPage {
   @Builder
   SideBar() {
 
+  }
+
+  private sendMessage(msg: string) {
+    this.sseGateway.postStreamRequest("http://xxxxxxxx:3000/v1/chat/completions", this.dataSource.getContextMessage())
+  }
+
+  /**
+   * SSE 监听器
+   */
+  private sseListener: SSEListener = {
+    onStart: () => {
+      this.dataSource.addAssistantMessage("")
+    },
+    onChunkMessage: (chunk: LLMChunk) => {
+      const content = chunk?.choices?.[0]?.delta?.content ?? ""
+      if (content.length > 0) {
+        this.responseMsg += content
+      }
+      this.dataSource.updateAssistantMessage(this.responseMsg)
+    },
+    onComplete: () => {
+      this.responseMsg = ""
+    },
+    // onMessage: (result: LLMResult) => {
+    //   this.dataSource.updateAssistantMessage(result?.choices?.[0]?.message?.content ?? "")
+    // }
   }
 }

@@ -57,8 +57,8 @@ export struct HomePage {
   }
 
   aboutToAppear(): void {
-    const sse = new SSEGateway()
-    sse.postStreamRequest("http://xxxxxxxx:3000/v1/chat/completions")
+    // const sse = new SSEGateway()
+    // sse.postStreamRequest("http://xxxxxxxx:3000/v1/chat/completions", )
   }
 
   /**

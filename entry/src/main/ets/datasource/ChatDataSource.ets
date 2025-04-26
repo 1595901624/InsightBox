@@ -1,6 +1,7 @@
 import { BasicDataSource } from '../base/BaseDataSource';
 import { ChatMessage } from '../model/ChatMessage';
 import { ChatRole } from '../model/ChatRole';
+import { LLMChoiceMessage } from '../model/LLMChoiceMessage';
 
 export class ChatDataSource extends BasicDataSource<ChatMessage> {
   // addMessage(msg: ChatMessage) {
@@ -39,5 +40,37 @@ export class ChatDataSource extends BasicDataSource<ChatMessage> {
     chatMessage.role = ChatRole.Assistant
     chatMessage.content = msg
     this.insertData(chatMessage)
+  }
+
+  /**
+   * 更新最后一条的Assistant消息
+   */
+  updateAssistantMessage(msg: string) {
+    const chatMessage = this.getDataList()[this.getDataList().length - 1]
+    if (chatMessage == undefined || chatMessage.role != ChatRole.Assistant) {
+      return
+    }
+    chatMessage.content = msg
+    this.replace(this.getDataList().length - 1, chatMessage)
+    this.notifyDataReload()
+  }
+
+  getContextMessage(): LLMChoiceMessage[] {
+    const contextMessage: LLMChoiceMessage[] = []
+    for (let i = 0; i < this.getDataList().length; i++) {
+      const chatMessage = this.getDataList()[i]
+      if (chatMessage.role == ChatRole.User) {
+        contextMessage.push({
+          role: 'user',
+          content: chatMessage.content
+        })
+      } else if (chatMessage.role == ChatRole.Assistant) {
+        contextMessage.push({
+          role: 'assistant',
+          content: chatMessage.content
+        })
+      }
+    }
+    return contextMessage
   }
 }

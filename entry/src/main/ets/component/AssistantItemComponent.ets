@@ -1,10 +1,13 @@
-import { LengthMetrics } from "@kit.ArkUI"
+import { LengthMetrics } from '@kit.ArkUI'
+import { ChatMessage } from '../model/ChatMessage'
 
 /**
  * 助手消息组件
  */
 @ComponentV2
 export struct AssistantItemComponent {
+  @Param @Require message: ChatMessage
+
   build() {
     RelativeContainer() {
       Image($r('app.media.app_icon'))
@@ -19,8 +22,8 @@ export struct AssistantItemComponent {
           }
         })
 
-      Text("帮我写一段话，按照下面的意思\n1. 你好\n2. 你叫什么名字\n3. 你多大了")
-        .id('user_name')
+      Text(this.message.content ?? "")
+        .id('content')
         .fontSize($r('app.float.font_size_chat_message_medium'))
         .textAlign(TextAlign.Start)
         .constraintSize({
@@ -36,9 +39,9 @@ export struct AssistantItemComponent {
         .margin({
           start: LengthMetrics.vp(8)
         })// 设置字体颜色和背景颜色
-        .fontColor(Color.White)
+        .fontColor($r('app.color.chat_bubble_text_color'))
         .borderRadius(8)
-        .backgroundColor(Color.Orange)
+        .backgroundColor($r('app.color.chat_bubble_assistant_background'))
     }
     .padding({
       end: LengthMetrics.vp(16)
