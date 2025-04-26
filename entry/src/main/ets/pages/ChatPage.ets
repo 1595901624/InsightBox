@@ -9,17 +9,18 @@ import { KeyboardAvoidMode, LengthMetrics } from '@kit.ArkUI';
 import { SSEGateway } from '../http/gateway/SSEGateway';
 import { SSEListener } from '../http/gateway/SSEListener';
 import { LLMChunk } from '../model/LLMChunk';
+import { DrawerLayout, DrawerLayoutController } from '@cloris/drawerlayout';
 
 @HMRouter({ pageUrl: PageConstant.PAGE_CHAT })
 @ComponentV2
 export struct ChatPage {
-  @Local private showSideBar: boolean = false;
   // 模型名称
   @Local private modelName: ResourceStr = $r('app.string.app_name')
   private scroller = new ListScroller()
   private dataSource: ChatDataSource = new ChatDataSource();
   private sseGateway: SSEGateway = new SSEGateway();
   private responseMsg: string = ""
+  private drawerLayoutController: DrawerLayoutController = new DrawerLayoutController()
 
   aboutToAppear(): void {
     this.sseGateway.setListener(this.sseListener)
@@ -32,80 +33,121 @@ export struct ChatPage {
 
   build() {
     SafeAreaLayout() {
-      RelativeContainer() {
-        this.TitleBar()
-
-        Column() {
-          List({
-            scroller: this.scroller
-          }) {
-            LazyForEach(this.dataSource, (item: ChatMessage, index: number) => {
-              ListItem() {
-                ChatItemComponent({
-                  message: item,
-                })
-              }
-              .onSizeChange((_oldValue, newValue) => {
-                if (!this.dataSource.isLastMessage(index)) {
-                  return
-                }
-                // 自动滚动到底部
-                if (newValue.height && newValue.height > 0) {
-                  this.scroller.scrollEdge(Edge.Bottom)
-                }
-              })
-            }, (item: ChatMessage, index: number) => {
-              return JSON.stringify(item) + index
-            })
-
-          }
-          .scrollBar(BarState.Off)
-          .divider({
-            color: Color.Transparent,
-            strokeWidth: 16,
-          })
+      DrawerLayout({
+        controller: this.drawerLayoutController,
+        mainContent: () => {
+          this.MainContent()
+        },
+        navContent: () => {
+          this.NavContent()
+        },
+        onMaskClick: () => {
+          this.drawerLayoutController.closeDrawer()
+        },
+        onProgressChange: (progress: number) => {
+          
         }
-        .justifyContent(FlexAlign.End)
+      })
+    }
+  }
+
+  /**
+   * 主布局
+   */
+  @Builder
+  MainContent() {
+    RelativeContainer() {
+      this.TitleBar()
+
+      Column() {
+        List({
+          scroller: this.scroller
+        }) {
+          LazyForEach(this.dataSource, (item: ChatMessage, index: number) => {
+            ListItem() {
+              ChatItemComponent({
+                message: item,
+              })
+            }
+            .onSizeChange((_oldValue, newValue) => {
+              if (!this.dataSource.isLastMessage(index)) {
+                return
+              }
+              // 自动滚动到底部
+              if (newValue.height && newValue.height > 0) {
+                this.scroller.scrollEdge(Edge.Bottom)
+              }
+            })
+          }, (item: ChatMessage, index: number) => {
+            return JSON.stringify(item) + index
+          })
+
+        }
+        .scrollBar(BarState.Off)
+        .divider({
+          color: Color.Transparent,
+          strokeWidth: 16,
+        })
+      }
+      .justifyContent(FlexAlign.End)
+      .padding({
+        start: LengthMetrics.vp(16),
+        end: LengthMetrics.vp(16),
+      })
+      .margin({
+        bottom: LengthMetrics.vp(16)
+      })
+      .alignRules({
+        top: {
+          align: VerticalAlign.Bottom,
+          anchor: 'title_bar',
+        },
+        bottom: {
+          align: VerticalAlign.Top,
+          anchor: 'chat_input',
+        }
+      })
+
+      ChatInputView({
+        onSendClick: (msg: string) => {
+          this.sendMessage(msg)
+        }
+      })
+        .id('chat_input')
         .padding({
           start: LengthMetrics.vp(16),
-          end: LengthMetrics.vp(16),
-        })
-        .margin({
-          bottom: LengthMetrics.vp(16)
+          end: LengthMetrics.vp(16)
         })
         .alignRules({
-          top: {
-            align: VerticalAlign.Bottom,
-            anchor: 'title_bar',
-          },
           bottom: {
-            align: VerticalAlign.Top,
-            anchor: 'chat_input',
-          }
+            align: VerticalAlign.Bottom,
+            anchor: '__container__',
+          },
         })
 
-        ChatInputView({
-          onSendClick: (msg: string) => {
-            this.sendMessage(msg)
-          }
-        })
-          .id('chat_input')
-          .padding({
-            start: LengthMetrics.vp(16),
-            end: LengthMetrics.vp(16)
-          })
-          .alignRules({
-            bottom: {
-              align: VerticalAlign.Bottom,
-              anchor: '__container__',
-            },
-          })
-
-        this.SideBar()
-      }
-      .width("100%")
-      .height("100%")
+      this.SideBar()
     }
+    .width("100%")
+    .height("100%")
+  }
+
+  /**
+   * 抽屉布局
+   */
+  @Builder
+  NavContent() {
+    RelativeContainer() {
+      // Text("抽屉布局")
+      //   .fontSize($r('app.float.font_size_title'))
+      //   .fontWeight(FontWeight.Bold)
+      //   .padding({
+      //     start: LengthMetrics.vp(16),
+      //     end: LengthMetrics.vp(16),
+      //   })
+    }
+    .backgroundColor(Color.White)
+    .height('100%')
+    .width('100%')
   }
 
   /**
@@ -114,6 +156,23 @@ export struct ChatPage {
   @Builder
   TitleBar() {
     RelativeContainer() {
+      Image($r('app.media.icon_svg_menu'))
+        .width(20)
+        .height(20)
+        .fillColor(Color.Black)
+        .onClick(() => {
+          this.drawerLayoutController.openDrawer()
+        })
+        .margin({
+          start: LengthMetrics.vp(16)
+        })
+        .alignRules({
+          center: {
+            align: VerticalAlign.Center,
+            anchor: '__container__',
+          },
+        })
+
       Text(this.modelName)
         .fontWeight(FontWeight.Bold)
         .fontSize($r('app.float.font_size_title'))
@@ -129,7 +188,7 @@ export struct ChatPage {
           },
         })
 
-      Image($r('app.media.icon_arrow_end'))
+      Image($r("app.media.icon_svg_arrow_end"))
         .width(16)
         .height(16)
         .margin({
