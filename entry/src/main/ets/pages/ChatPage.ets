@@ -62,7 +62,7 @@ export struct ChatPage {
           .scrollBar(BarState.Off)
           .divider({
             color: Color.Transparent,
-            strokeWidth: 10,
+            strokeWidth: 16,
           })
         }
         .justifyContent(FlexAlign.End)
@@ -86,7 +86,6 @@ export struct ChatPage {
 
         ChatInputView({
           onSendClick: (msg: string) => {
-            this.dataSource.addUserMessage(msg)
             this.sendMessage(msg)
           }
         })
@@ -157,6 +156,7 @@ export struct ChatPage {
   }
 
   private sendMessage(msg: string) {
+    this.dataSource.addUserMessage(msg)
     this.sseGateway.postStreamRequest("http://xxxxxxxx:3000/v1/chat/completions", this.dataSource.getContextMessage())
   }
 

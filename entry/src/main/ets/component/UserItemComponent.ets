@@ -11,19 +11,23 @@ export struct UserItemComponent {
   build() {
     RelativeContainer() {
       Text(this.message.content ?? "")
-        .id('user_name')
+        .id('content')
         .fontSize($r('app.float.font_size_chat_message_medium'))
         .textAlign(TextAlign.Start)
         .constraintSize({
-          maxWidth: "70%"
+          maxWidth: "90%"
         })
         .alignRules({
+          // end: {
+          //   anchor: 'user_icon',
+          //   align: HorizontalAlign.Start
+          // }
           end: {
-            anchor: 'user_icon',
-            align: HorizontalAlign.Start
+            anchor: '__container__',
+            align: HorizontalAlign.End
           }
         })
-        .padding(14)
+        .padding(10)
         .margin({
           end: LengthMetrics.vp(8)
         })// 设置字体颜色和背景颜色
@@ -31,17 +35,17 @@ export struct UserItemComponent {
         .borderRadius(8)
         .backgroundColor($r('app.color.chat_bubble_user_background'))
 
-      Image($r('app.media.app_icon'))
-        .interpolation(ImageInterpolation.Medium)
-        .width(30)
-        .height(30)
-        .id('user_icon')
-        .alignRules({
-          end: {
-            anchor: '__container__',
-            align: HorizontalAlign.End
-          }
-        })
+      // Image($r('app.media.app_icon'))
+      //   .interpolation(ImageInterpolation.Medium)
+      //   .width(30)
+      //   .height(30)
+      //   .id('user_icon')
+      //   .alignRules({
+      //     end: {
+      //       anchor: '__container__',
+      //       align: HorizontalAlign.End
+      //     }
+      //   })
     }
     .width("100%")
     .height('auto')

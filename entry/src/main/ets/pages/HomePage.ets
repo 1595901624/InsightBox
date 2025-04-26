@@ -3,7 +3,6 @@ import { PageConstant } from '../constant/PageConstant';
 import { ChatInputView } from '../widget/ChatInputView';
 import { SafeAreaLayout } from '../widget/SafeAreaLayout';
 import { LengthMetrics } from '@kit.ArkUI';
-import { SSEGateway } from '../http/gateway/SSEGateway';
 
 @HMRouter({ pageUrl: PageConstant.PAGE_HOME })
 @ComponentV2

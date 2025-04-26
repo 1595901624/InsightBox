@@ -10,24 +10,24 @@ export struct AssistantItemComponent {
 
   build() {
     RelativeContainer() {
-      Image($r('app.media.app_icon'))
-        .interpolation(ImageInterpolation.Medium)
-        .width(30)
-        .height(30)
-        .id('user_icon')
-        .alignRules({
-          start: {
-            anchor: '__container__',
-            align: HorizontalAlign.Start
-          }
-        })
+      // Image($r('app.media.app_icon'))
+      //   .interpolation(ImageInterpolation.Medium)
+      //   .width(30)
+      //   .height(30)
+      //   .id('user_icon')
+      //   .alignRules({
+      //     start: {
+      //       anchor: '__container__',
+      //       align: HorizontalAlign.Start
+      //     }
+      //   })
 
       Text(this.message.content ?? "")
         .id('content')
         .fontSize($r('app.float.font_size_chat_message_medium'))
         .textAlign(TextAlign.Start)
         .constraintSize({
-          maxWidth: "70%"
+          maxWidth: "90%"
         })
         .alignRules({
           start: {
@@ -35,7 +35,7 @@ export struct AssistantItemComponent {
             align: HorizontalAlign.End
           }
         })
-        .padding(8)
+        .padding(10)
         .margin({
           start: LengthMetrics.vp(8)
         })// 设置字体颜色和背景颜色

@@ -18,15 +18,23 @@
     },
     {
       "name": "chat_bubble_user_background",
-      "value": "#FDD3E8FF"
+      "value": "#DDD9EBFF"
     },
     {
       "name": "chat_bubble_assistant_background",
-      "value": "#FDFFF4D1"
+      "value": "#DDFFF6D9"
     },
     {
       "name": "chat_bubble_text_color",
       "value": "$color:black_80"
+    },
+    {
+      "name": "chat_input_send_button_background",
+      "value": "#000000"
+    },
+    {
+      "name": "chat_input_send_button_background_disabled",
+      "value": "#FF565656"
     }
   ]
 }

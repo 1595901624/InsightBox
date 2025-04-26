@@ -75,8 +75,9 @@ export struct ChatInputView {
           end: LengthMetrics.vp(8),
           bottom: LengthMetrics.vp(8)
         })
-        .fillColor(Color.White)
-        .backgroundColor(Color.Black)
+        .backgroundColor($r('app.color.chat_input_send_button_background'))
+        .fillColor(Color.White)// .backgroundColor(this.inputText.length > 0 ? $r('app.color.chat_input_send_button_background') :
+          // $r('app.color.chat_input_send_button_background_disabled'))
         .alignRules({
           end: {
             anchor: '__container__',
@@ -87,8 +88,11 @@ export struct ChatInputView {
             align: VerticalAlign.Bottom
           }
         })
+        .enabled(this.inputText.length > 0)
+        .opacity(this.inputText.length > 0 ? 1 : 0.5)
         .onClick(() => {
           this.onSendClick?.(this.inputText)
+          this.inputText = ''
         })
     }
   }
