@@ -21,4 +21,14 @@ export enum ChatStatus {
    * 助手正在说话、输出
    */
   AssistantGenerating,
+
+  /**
+   * 助手正在加载
+   */
+  AssistantLoading,
+
+  /**
+   * 助手正在思考
+   */
+  AssistantThinking,
 }

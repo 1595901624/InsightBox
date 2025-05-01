@@ -10,6 +10,7 @@ import { SSEGateway } from '../http/gateway/SSEGateway';
 import { SSEListener } from '../http/gateway/SSEListener';
 import { LLMChunk } from '../model/LLMChunk';
 import { DrawerLayout, DrawerLayoutController } from '@cloris/drawerlayout';
+import { ChatStatus } from '../model/ChatStatus';
 
 @HMRouter({ pageUrl: PageConstant.PAGE_CHAT })
 @ComponentV2
@@ -21,6 +22,8 @@ export struct ChatPage {
   private sseGateway: SSEGateway = new SSEGateway();
   private responseMsg: string = ""
   private drawerLayoutController: DrawerLayoutController = new DrawerLayoutController()
+  // 聊天状态
+  private chatStatus: ChatStatus = ChatStatus.Ready
 
   aboutToAppear(): void {
     this.sseGateway.setListener(this.sseListener)
@@ -224,9 +227,11 @@ export struct ChatPage {
    */
   private sseListener: SSEListener = {
     onStart: () => {
+      this.chatStatus = ChatStatus.AssistantLoading
       this.dataSource.addAssistantMessage("")
     },
     onChunkMessage: (chunk: LLMChunk) => {
+      this.chatStatus = ChatStatus.AssistantGenerating
       const content = chunk?.choices?.[0]?.delta?.content ?? ""
       if (content.length > 0) {
         this.responseMsg += content
@@ -234,6 +239,7 @@ export struct ChatPage {
       this.dataSource.updateAssistantMessage(this.responseMsg)
     },
     onComplete: () => {
+      this.chatStatus = ChatStatus.Idle
       this.responseMsg = ""
     },
     // onMessage: (result: LLMResult) => {

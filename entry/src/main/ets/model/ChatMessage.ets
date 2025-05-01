@@ -1,4 +1,5 @@
-import { ChatRole } from "./ChatRole";
+import { ChatMessageType } from './ChatMessageType';
+import { ChatRole } from './ChatRole';
 
 /**
  * 聊天信息
@@ -21,6 +22,10 @@ export class ChatMessage {
    * 时间戳
    */
   timestamp?: number = 0
+  /**
+   * 消息类型
+   */
+  type?: ChatMessageType = ChatMessageType.Text
 
   constructor(name: string = '', role: ChatRole = ChatRole.Unknown, content: string = '') {
     this.name = name;

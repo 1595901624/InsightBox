@@ -1,5 +1,6 @@
 import { BasicDataSource } from '../base/BaseDataSource';
 import { ChatMessage } from '../model/ChatMessage';
+import { ChatMessageType } from '../model/ChatMessageType';
 import { ChatRole } from '../model/ChatRole';
 import { LLMChoiceMessage } from '../model/LLMChoiceMessage';
 
@@ -32,13 +33,14 @@ export class ChatDataSource extends BasicDataSource<ChatMessage> {
   /**
    * 添加助手消息
    */
-  addAssistantMessage(msg: string) {
+  addAssistantMessage(msg: string, type: ChatMessageType = ChatMessageType.Text) {
     const chatMessage = new ChatMessage()
     chatMessage.id = this.getDataList().length + ""
     chatMessage.name = '助手'
     chatMessage.timestamp = new Date().getTime()
     chatMessage.role = ChatRole.Assistant
     chatMessage.content = msg
+    chatMessage.type = type
     this.insertData(chatMessage)
   }
 
