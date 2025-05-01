@@ -32,7 +32,14 @@ export struct UserItemComponent {
           end: LengthMetrics.vp(8)
         })// 设置字体颜色和背景颜色
         .fontColor($r('app.color.chat_bubble_text_color'))
-        .borderRadius(8)
+        .borderRadius({
+          topStart: LengthMetrics.vp(16),
+          topEnd: LengthMetrics.vp(16),
+          bottomStart: LengthMetrics.vp(16),
+          bottomEnd: LengthMetrics.vp(8)
+        })
+        .borderWidth(1)
+        .borderColor($r('app.color.chat_bubble_border_color'))
         .backgroundColor($r('app.color.chat_bubble_user_background'))
 
       // Image($r('app.media.app_icon'))

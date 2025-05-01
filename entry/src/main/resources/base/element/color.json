@@ -1,6 +1,10 @@
 {
   "color": [
     {
+      "name": "background",
+      "value": "#F8F7F6"
+    },
+    {
       "name": "start_window_background",
       "value": "#FFFFFF"
     },
@@ -18,7 +22,11 @@
     },
     {
       "name": "chat_bubble_user_background",
-      "value": "#DDD9EBFF"
+      "value": "#FCFCFC"
+    },
+    {
+      "name": "chat_bubble_border_color",
+      "value": "#14000000"
     },
     {
       "name": "chat_bubble_assistant_background",

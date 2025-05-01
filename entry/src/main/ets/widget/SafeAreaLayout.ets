@@ -1,4 +1,4 @@
-import { screen } from "../util/ScreenUtil";
+import { screen } from '../util/ScreenUtil';
 
 /**
  * 安全区域布局
@@ -15,6 +15,7 @@ export struct SafeAreaLayout {
       top: screen.getStatusBarHeightVp(),
       bottom: screen.getBottomNavigationBarHeightVp(),
     })
+    .backgroundColor($r('app.color.background'))
     .width('100%')
     .height('100%')
   }

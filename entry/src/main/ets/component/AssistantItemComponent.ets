@@ -28,20 +28,18 @@ export struct AssistantItemComponent {
         .textAlign(TextAlign.Start)
         .constraintSize({
           maxWidth: "90%"
-        })
-        .alignRules({
-          start: {
-            anchor: 'user_icon',
-            align: HorizontalAlign.End
-          }
-        })
-        .padding(10)
-        .margin({
-          start: LengthMetrics.vp(8)
-        })// 设置字体颜色和背景颜色
+        })// .alignRules({
+          //   start: {
+          //     anchor: 'user_icon',
+          //     align: HorizontalAlign.End
+          //   }
+          // })
+        .padding(10)// .margin({
+          //   start: LengthMetrics.vp(8)
+          // })// 设置字体颜色和背景颜色
         .fontColor($r('app.color.chat_bubble_text_color'))
-        .borderRadius(8)
-        .backgroundColor($r('app.color.chat_bubble_assistant_background'))
+      // .borderRadius(8)
+      // .backgroundColor($r('app.color.chat_bubble_assistant_background'))
     }
     .padding({
       end: LengthMetrics.vp(16)

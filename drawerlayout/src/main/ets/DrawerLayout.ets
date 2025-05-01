@@ -99,7 +99,7 @@ export struct DrawerLayout {
       direction: PanDirection.Horizontal
     })
       .onActionStart(() => {
-        if (this.touchX >= this.drawerWidth) {
+        if (this.drawerLayoutStatus == DrawerLayoutStatus.Close && this.touchX >= this.drawerWidth) {
           return
         }
         this.horizontalMotion = true

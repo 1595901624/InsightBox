@@ -45,7 +45,7 @@ export struct ChatPage {
           this.drawerLayoutController.closeDrawer()
         },
         onProgressChange: (progress: number) => {
-          
+
         }
       })
     }
@@ -145,7 +145,7 @@ export struct ChatPage {
       //     end: LengthMetrics.vp(16),
       //   })
     }
-    .backgroundColor(Color.White)
+    .backgroundColor($r('app.color.background'))
     .height('100%')
     .width('100%')
   }
