@@ -1,0 +1,33 @@
+[
+  {
+    "brand": "OpenAI",
+    "enabled": true,
+    "properties": {
+      "apikey": {
+        "title": "%apikey.title%",
+        "description": "%apikey.description%",
+        "default": "",
+        "url": "https://platform.openai.com/api-keys"
+      },
+      "baseUrl": {
+        "title": "%baseUrl.title%",
+        "description": "%baseUrl.description%",
+        "default": "https://api.openai.com/v1"
+      },
+      "model": {
+        "title": "%model.title%",
+        "description": "%model.description%",
+        "list": [
+          {
+            "id": "gpt-3.5-turbo",
+            "name": "gpt-3.5",
+            "type": 1,
+            "description": "%model.gpt-3.5.description%",
+            "created": true,
+            "group": "Base"
+          }
+        ]
+      }
+    }
+  }
+]

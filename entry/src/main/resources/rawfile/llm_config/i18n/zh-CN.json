@@ -1,0 +1,8 @@
+{
+  "apikey.title": "API密钥",
+  "apikey.description": "",
+  "baseUrl.title": "API地址",
+  "baseUrl.description": "/结尾忽略v1版本，#结尾强制使用输入地址",
+  "model.title": "模型列表",
+  "model.description": ""
+}
