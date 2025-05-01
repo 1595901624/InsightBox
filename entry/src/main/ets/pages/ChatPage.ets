@@ -11,6 +11,8 @@ import { SSEListener } from '../http/gateway/SSEListener';
 import { LLMChunk } from '../model/LLMChunk';
 import { DrawerLayout, DrawerLayoutController } from '@cloris/drawerlayout';
 import { ChatStatus } from '../model/ChatStatus';
+import { ChatMessageType } from '../model/ChatMessageType';
+import { stringUtil } from '../util/StringUtil';
 
 @HMRouter({ pageUrl: PageConstant.PAGE_CHAT })
 @ComponentV2
@@ -228,7 +230,8 @@ export struct ChatPage {
   private sseListener: SSEListener = {
     onStart: () => {
       this.chatStatus = ChatStatus.AssistantLoading
-      this.dataSource.addAssistantMessage("")
+      this.dataSource.addAssistantMessage(stringUtil.getString($r('app.string.chat_assistant_loading')),
+        ChatMessageType.Loading)
     },
     onChunkMessage: (chunk: LLMChunk) => {
       this.chatStatus = ChatStatus.AssistantGenerating

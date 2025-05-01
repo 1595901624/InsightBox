@@ -53,6 +53,7 @@ export class ChatDataSource extends BasicDataSource<ChatMessage> {
       return
     }
     chatMessage.content = msg
+    chatMessage.type = ChatMessageType.Text
     this.replace(this.getDataList().length - 1, chatMessage)
     this.notifyDataReload()
   }
