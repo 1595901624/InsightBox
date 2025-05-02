@@ -33,7 +33,8 @@ export class LLMConfigUtil {
     let configString = fileUtil.getRawFileString("llm_config/llm_configuration.json")
     // 获取语言
     // 参考这个文件: https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-intl
-    const languageFileName = i18n.System.getSystemLanguage() + "-" + i18n.System.getSystemRegion();
+    const languageFileName = i18n.System.getSystemLanguage();
+    log.info(`getSystemLanguage: ${i18n.System.getSystemLanguage()}`);
     // 读取配置文件
     let languageFilePath = `llm_config/i18n/${languageFileName}.json`;
     let languageConfigString = fileUtil.getRawFileString(languageFilePath);
@@ -42,7 +43,7 @@ export class LLMConfigUtil {
     if (stringUtil.isNullOrEmpty(languageConfigString)) {
       log.error(`getRawFileString error: ${languageFilePath}`);
       // 如果没有找到语言文件，则使用默认简体中文语言文件
-      languageFilePath = `llm_config/i18n/zh-Hans-CN.json`;
+      languageFilePath = `llm_config/i18n/zh-Hans.json`;
       languageConfigString = fileUtil.getRawFileString(languageFilePath);
     }
 
