@@ -13,6 +13,7 @@ import { DrawerLayout, DrawerLayoutController } from '@cloris/drawerlayout';
 import { ChatStatus } from '../model/ChatStatus';
 import { ChatMessageType } from '../model/ChatMessageType';
 import { stringUtil } from '../util/StringUtil';
+import { SideBottomComponent } from '../component/SideBottomComponent';
 
 @HMRouter({ pageUrl: PageConstant.PAGE_CHAT })
 @ComponentV2
@@ -149,6 +150,18 @@ export struct ChatPage {
       //     start: LengthMetrics.vp(16),
       //     end: LengthMetrics.vp(16),
       //   })
+      SideBottomComponent()
+        .id('side_bottom')
+        .alignRules({
+          bottom: {
+            align: VerticalAlign.Bottom,
+            anchor: '__container__',
+          },
+          start: {
+            align: HorizontalAlign.Start,
+            anchor: '__container__',
+          },
+        })
     }
     .backgroundColor($r('app.color.background'))
     .height('100%')
