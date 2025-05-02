@@ -4,13 +4,15 @@ import { LengthMetrics } from '@kit.ArkUI'
 export struct SettingView {
   @Param title: ResourceStr = ""
   @Param icon: ResourceStr | PixelMap = ""
+  @Param iconSize: number = 18
   @Event onSetClick?: () => void
 
   build() {
     Button() {
       Text() {
         ImageSpan(this.icon)
-          .height(18)
+          .height(this.iconSize)
+          .objectFit(ImageFit.Fill)
           .padding({
             end: LengthMetrics.vp(12)
           })

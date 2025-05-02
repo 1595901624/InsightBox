@@ -3,6 +3,10 @@
     {
       "name": "set",
       "value": "设置"
+    },
+    {
+      "name": "llm_set",
+      "value": "模型"
     }
   ]
 }

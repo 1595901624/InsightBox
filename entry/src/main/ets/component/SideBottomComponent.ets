@@ -12,7 +12,9 @@ export struct SideBottomComponent {
   @Require @Param drawerLayoutController: DrawerLayoutController
 
   build() {
-    Column() {
+    Column({
+      space: 10
+    }) {
       // Button() {
       //   Text() {
       //     ImageSpan($r('app.media.icon_svg_set'))
@@ -36,6 +38,18 @@ export struct SideBottomComponent {
       //   top: LengthMetrics.vp(8),
       //   bottom: LengthMetrics.vp(8)
       // })
+      SettingView({
+        title: $r("app.string.llm_set"),
+        icon: $r('app.media.icon_svg_llm'),
+        iconSize: 16,
+        onSetClick: () => {
+          this.drawerLayoutController.closeDrawer(false)
+          HMRouterMgr.push({
+            pageUrl: PageConstant.PAGE_MODEL_LIST
+          })
+        },
+      })
+
       SettingView({
         title: $r("app.string.set"),
         icon: $r('app.media.icon_svg_set'),
