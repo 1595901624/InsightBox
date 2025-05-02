@@ -1,4 +1,7 @@
+import { DrawerLayoutController } from '@cloris/drawerlayout'
+import { HMRouterMgr } from '@hadss/hmrouter'
 import { LengthMetrics } from '@kit.ArkUI'
+import { PageConstant } from '../constant/PageConstant'
 import { SettingView } from '../widget/SettingView'
 
 /**
@@ -6,6 +9,8 @@ import { SettingView } from '../widget/SettingView'
  */
 @ComponentV2
 export struct SideBottomComponent {
+  @Require @Param drawerLayoutController: DrawerLayoutController
+
   build() {
     Column() {
       // Button() {
@@ -35,7 +40,10 @@ export struct SideBottomComponent {
         title: $r("app.string.set"),
         icon: $r('app.media.icon_svg_set'),
         onSetClick: () => {
-
+          this.drawerLayoutController.closeDrawer(false)
+          HMRouterMgr.push({
+            pageUrl: PageConstant.PAGE_SETTING
+          })
         },
       })
     }.width("100%")

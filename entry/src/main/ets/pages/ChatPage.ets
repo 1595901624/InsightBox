@@ -150,7 +150,9 @@ export struct ChatPage {
       //     start: LengthMetrics.vp(16),
       //     end: LengthMetrics.vp(16),
       //   })
-      SideBottomComponent()
+      SideBottomComponent({
+        drawerLayoutController: this.drawerLayoutController,
+      })
         .id('side_bottom')
         .alignRules({
           bottom: {
