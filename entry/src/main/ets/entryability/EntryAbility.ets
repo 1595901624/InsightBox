@@ -3,6 +3,7 @@ import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
 import { HMRouterMgr } from '@hadss/hmrouter';
 import { GlobalUtil } from '../util/GlobalUtil';
+import { LLMConfigUtil } from '../config/LLMConfigUtil';
 
 const DOMAIN = 0x0000;
 
@@ -24,7 +25,7 @@ export default class EntryAbility extends UIAbility {
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
     windowStage.getMainWindowSync().setWindowLayoutFullScreen(true)
     GlobalUtil.init(this.context, windowStage);
-
+    LLMConfigUtil.getInstance().init()
     windowStage.loadContent('pages/Index', (err) => {
       if (err.code) {
         hilog.error(DOMAIN, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err));

@@ -10,6 +10,15 @@ class StringUtil {
     }
     return getContext(this).resourceManager.getStringSync(resourceStr.id)
   }
+
+  /**
+   * 判断字符串是否为空
+   * @param resourceStr
+   * @returns
+   */
+  isNullOrEmpty(str?: string): boolean {
+    return str == null || str.length === 0
+  }
 }
 
 export const stringUtil = new StringUtil()
