@@ -43,6 +43,10 @@
     {
       "name": "chat_input_send_button_background_disabled",
       "value": "#FF565656"
+    },
+    {
+      "name": "set_text_color",
+      "value": "#000000"
     }
   ]
 }
