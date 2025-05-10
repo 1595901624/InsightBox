@@ -3,6 +3,7 @@ import { PageConstant } from '../constant/PageConstant'
 import { CommonTitleBar } from '../widget/CommonTitleBar'
 import { SafeAreaLayout } from '../widget/SafeAreaLayout'
 import { LengthMetrics } from '@kit.ArkUI'
+import { ModelAddAndEditPageParam } from './ModelAddAndEditPage'
 
 /**
  * 模型设置页面
@@ -27,6 +28,15 @@ export struct ModelListPage {
           .padding(14)
           .shadow(ShadowStyle.OUTER_FLOATING_SM)
           .borderRadius(24)
+          .onClick(() => {
+            // 临时跳转
+            HMRouterMgr.push({
+              pageUrl: PageConstant.PAGE_MODEL_ADD_EDIT,
+              param: {
+                type: 'add'
+              } as ModelAddAndEditPageParam
+            })
+          })
           .stateStyles({
             normal: this.normalStyles,
             pressed: this.pressedStyles
@@ -46,6 +56,10 @@ export struct ModelListPage {
             bottom: LengthMetrics.vp(20),
             end: LengthMetrics.vp(20)
           })
+
+        List() {
+
+        }
       }
     }
   }

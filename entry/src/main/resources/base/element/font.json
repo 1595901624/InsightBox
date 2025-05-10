@@ -23,6 +23,10 @@
     {
       "name": "font_size_title",
       "value": "18"
+    },
+    {
+      "name": "font_size_subtitle",
+      "value": "16"
     }
   ]
 }

@@ -6,4 +6,5 @@ export class PageConstant {
   static readonly PAGE_SETTING = '/pages/SettingPage';
   static readonly PAGE_ABOUT = '/pages/AboutPage';
   static readonly PAGE_MODEL_LIST = '/pages/ModelListPage';
+  static readonly PAGE_MODEL_ADD_EDIT = '/pages/ModelAddAndEditPage';
 }

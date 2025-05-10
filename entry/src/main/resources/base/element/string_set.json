@@ -7,6 +7,46 @@
     {
       "name": "llm_set",
       "value": "模型"
+    },
+    {
+      "name": "llm_save",
+      "value": "保存"
+    },
+    {
+      "name": "llm_add",
+      "value": "添加模型"
+    },
+    {
+      "name": "llm_edit",
+      "value": "编辑模型"
+    },
+    {
+      "name": "llm_delete",
+      "value": "删除模型"
+    },
+    {
+      "name": "llm_delete_confirm",
+      "value": "确定删除吗？"
+    },
+    {
+      "name": "llm_delete_cancel",
+      "value": "取消"
+    },
+    {
+      "name": "llm_delete_ok",
+      "value": "确定"
+    },
+    {
+      "name": "llm_name",
+      "value": "模型名称"
+    },
+    {
+      "name": "llm_name_hint",
+      "value": "请输入模型名称"
+    },
+    {
+      "name": "llm_name_empty",
+      "value": "模型名称不能为空"
     }
   ]
 }
