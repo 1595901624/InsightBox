@@ -27,6 +27,30 @@
     {
       "name": "font_size_subtitle",
       "value": "16"
+    },
+    {
+      "name": "font_size_body",
+      "value": "14"
+    },
+    {
+      "name": "font_size_caption",
+      "value": "12"
+    },
+    {
+      "name": "font_size_button",
+      "value": "16"
+    },
+    {
+      "name": "font_size_input",
+      "value": "16"
+    },
+    {
+      "name": "font_size_link",
+      "value": "14"
+    },
+    {
+      "name": "font_size_label",
+      "value": "14"
     }
   ]
 }

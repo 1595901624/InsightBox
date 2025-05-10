@@ -74,6 +74,17 @@ export class LLMConfigUtil {
   }
 
   /**
+   * 获取配置
+   */
+  getConfigById(id: number): Nullable<LLMConfig.Config> {
+    const configList = this.getConfigList();
+    const config = configList.find((config) => {
+      return config.id == id;
+    });
+    return config;
+  }
+
+  /**
    * 获取启用的配置列表
    */
   getEnabledConfigList(): LLMConfig.Config[] {

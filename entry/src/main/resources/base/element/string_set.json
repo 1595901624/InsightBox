@@ -17,8 +17,24 @@
       "value": "添加模型"
     },
     {
+      "name": "llm_add_any",
+      "value": "添加 %s 模型"
+    },
+    {
       "name": "llm_edit",
       "value": "编辑模型"
+    },
+    {
+      "name": "llm_edit_any",
+      "value": "编辑 %s 模型"
+    },
+    {
+      "name": "llm_delete_any",
+      "value": "删除 %s 模型"
+    },
+    {
+      "name": "llm_delete_all",
+      "value": "删除所有模型"
     },
     {
       "name": "llm_delete",

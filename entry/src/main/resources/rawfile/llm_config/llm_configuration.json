@@ -1,5 +1,6 @@
 [
   {
+    "id": 0,
     "brand": "OpenAI",
     "enabled": true,
     "properties": {

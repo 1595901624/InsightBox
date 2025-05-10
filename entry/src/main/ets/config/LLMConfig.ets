@@ -25,6 +25,10 @@ export namespace LLMConfig {
    * LLM 配置
    */
   export interface Config {
+    /**
+     * id
+     */
+    id: number;
 
     /**
      * LLM 的品牌名称
