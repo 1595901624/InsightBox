@@ -32,7 +32,7 @@ export namespace LLMConfig {
     brand?: string;
 
     /**
-     * LLM 是否启用
+     * LLM 是否启用，默认启用
      */
     enabled?: boolean;
 
