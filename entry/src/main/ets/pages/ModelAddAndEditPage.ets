@@ -6,6 +6,7 @@ import { log } from '../util/LogUtil'
 import { CommonTitleBar } from '../widget/CommonTitleBar'
 import { SafeAreaLayout } from '../widget/SafeAreaLayout'
 import { LengthMetrics } from '@kit.ArkUI'
+import { ModelConfigDataSource } from '../datasource/ModelConfigDataSource'
 
 
 export interface ModelAddAndEditPageParam {
@@ -30,6 +31,10 @@ export struct ModelAddAndEditPage {
   private brandId: number = 0
   // 当前添加或者编辑的模型配置
   @Local private config: LLMConfig.Config | undefined = undefined
+  // 模型的 baseUrl
+  @Local private baseUrl: string = ""
+  // 模型列表数据源
+  @Local private modelListChatDataSource: ModelConfigDataSource = new ModelConfigDataSource()
 
   aboutToAppear(): void {
     const param = HMRouterMgr.getCurrentParam() as ModelAddAndEditPageParam
@@ -53,7 +58,8 @@ export struct ModelAddAndEditPage {
       HMRouterMgr.pop()
       return
     }
-
+    this.baseUrl = this.config?.properties?.baseUrl?.default ?? ""
+    this.modelListChatDataSource.pushList(this.config?.properties?.model?.list ?? [])
   }
 
   build() {
@@ -73,29 +79,97 @@ export struct ModelAddAndEditPage {
           .id('title_bar')
 
         // 添加或者编辑的模型配置
-        Column() {
+        Column({
+          space: 16
+        }) {
           Text(this.type === 'add' ? $r('app.string.llm_add_any', this.config?.brand ?? "") :
           $r('app.string.llm_edit_any', this.config?.brand ?? ""))
             .fontSize($r('app.float.font_size_subtitle'))
             .fontWeight(FontWeight.Bold)
 
-          // Column({
-          //   space: 8
-          // }) {
-          //   Text("API 地址")
-          //     .fontSize($r('app.float.font_size_subtitle'))
-          //
-          //   TextInput({
-          //     placeholder: "请输入API地址",
-          //   }).width("100%")
-          //
-          //   Text("/结尾忽略v1版本，#结尾强制使用输入地址")
-          //     .fontSize($r('app.float.font_size_label'))
-          //     .fontColor(Color.Gray)
-          //
-          // }.alignItems(HorizontalAlign.Start)
-          // .width("100%")
+          // API 地址
+          if (this.config?.properties?.baseUrl != undefined) {
+            Column({
+              space: 8
+            }) {
+              Text($r('app.string.llm_base_url'))
+                .fontSize($r('app.float.font_size_subtitle'))
+
+              TextInput({
+                text: $$this.baseUrl,
+                placeholder: $r('app.string.llm_base_url_hint'),
+              }).width("100%")
+                .borderRadius(8)
+
+              Text(this.getRealBaseUrl())
+                .fontSize($r('app.float.font_size_label'))
+                .fontColor($r('app.color.desc_text_color'))
+
+            }.alignItems(HorizontalAlign.Start)
+            .width("100%")
+          }
+
+          // API Key
+          if (this.config?.properties?.apikey != undefined) {
+            Column({
+              space: 8
+            }) {
+              Text($r('app.string.llm_api_key'))
+                .fontSize($r('app.float.font_size_subtitle'))
+
+              TextInput({
+                text: this.config?.properties?.apikey?.default,
+                placeholder: $r('app.string.llm_api_key_hint'),
+              }).width("100%")
+                .borderRadius(8)
+            }.alignItems(HorizontalAlign.Start)
+            .width("100%")
+          }
+
+          // 模型列表
+          if (this.config?.properties?.model != undefined) {
+            Column({
+              space: 8
+            }) {
+              Text($r('app.string.llm_model_list'))
+                .fontSize($r('app.float.font_size_subtitle'))
+
+              List() {
+                LazyForEach(this.modelListChatDataSource, (item: LLMConfig.ModelItem) => {
+                  ListItem() {
+                    Row() {
+                      Text(item.name)
+                        .fontSize($r('app.float.font_size_subtitle'))
+                        .fontWeight(FontWeight.Bold)
+                      Blank()
+                      Toggle({
+                        isOn: item.enabled,
+                        type: ToggleType.Switch
+                      })
+                    }
+                    .padding({
+                      start: LengthMetrics.vp(16),
+                      end: LengthMetrics.vp(16),
+                      top: LengthMetrics.vp(16),
+                      bottom: LengthMetrics.vp(16)
+                    })
+                    .borderRadius(8)
+                    .backgroundColor($r('app.color.list_item_bg_color'))
+                    .width("100%")
+                  }.margin({
+                    top: LengthMetrics.vp(4),
+                    bottom: LengthMetrics.vp(4)
+                  })
+                })
+              }
+            }.alignItems(HorizontalAlign.Start)
+            .width("100%")
+          }
         }
+        .padding({
+          start: LengthMetrics.vp(16),
+          end: LengthMetrics.vp(16),
+        })
         .width("100%")
         .alignItems(HorizontalAlign.Start)
         .margin({
@@ -107,10 +181,34 @@ export struct ModelAddAndEditPage {
           top: {
             anchor: "title_bar",
             align: VerticalAlign.Bottom
+          },
+          start: {
+            anchor: "__container__",
+            align: HorizontalAlign.Start
+          },
+          end: {
+            anchor: "__container__",
+            align: HorizontalAlign.End
           }
         })
       }
     }
+  }
+
+  /**
+   * 获取真实的 baseUrl
+   * /结尾忽略v1版本，#结尾强制使用输入地址
+   */
+  getRealBaseUrl() {
+    let realBaseUrl = ""
+    if (this.baseUrl.endsWith("/")) {
+      realBaseUrl = this.baseUrl.substring(0, this.baseUrl.length - 1) + "/chat/completions"
+    } else if (this.baseUrl.endsWith("#")) {
+      realBaseUrl = this.baseUrl.substring(0, this.baseUrl.length - 1)
+    } else {
+      realBaseUrl = this.baseUrl + "/v1/chat/completions"
+    }
+    return realBaseUrl
   }
 
   @Styles

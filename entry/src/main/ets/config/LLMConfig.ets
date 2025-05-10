@@ -68,7 +68,7 @@ export namespace LLMConfig {
     /**
      * 模型配置
      */
-    model?: Model[];
+    model?: Model;
   }
 
   /**
@@ -128,6 +128,16 @@ export namespace LLMConfig {
      * 模型类型
      */
     type?: ModelType;
+
+    /**
+     * 模型的名称
+     */
+    name?: string;
+
+    /**
+     * 模型是否启用
+     */
+    enabled?: boolean;
   }
 
   /**

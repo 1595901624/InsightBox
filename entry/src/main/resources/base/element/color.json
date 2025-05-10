@@ -47,6 +47,14 @@
     {
       "name": "set_text_color",
       "value": "#000000"
+    },
+    {
+      "name": "desc_text_color",
+      "value": "$color:black_50"
+    },
+    {
+      "name": "list_item_bg_color",
+      "value": "#F2F2F2"
     }
   ]
 }

@@ -63,6 +63,46 @@
     {
       "name": "llm_name_empty",
       "value": "模型名称不能为空"
+    },
+    {
+      "name": "llm_base_url",
+      "value": "API 地址"
+    },
+    {
+      "name": "llm_base_url_hint",
+      "value": "请输入 API 地址"
+    },
+    {
+      "name": "llm_base_url_empty",
+      "value": "API 地址不能为空"
+    },
+    {
+      "name": "llm_api_key",
+      "value": "API 密钥"
+    },
+    {
+      "name": "llm_api_key_hint",
+      "value": "请输入 API 密钥"
+    },
+    {
+      "name": "llm_api_key_empty",
+      "value": "API 密钥不能为空"
+    },
+    {
+      "name": "llm_model",
+      "value": "模型"
+    },
+    {
+      "name": "llm_model_hint",
+      "value": "请输入模型名称或 ID"
+    },
+    {
+      "name": "llm_model_empty",
+      "value": "模型名称或 ID 不能为空"
+    },
+    {
+      "name": "llm_model_list",
+      "value": "模型列表"
     }
   ]
 }

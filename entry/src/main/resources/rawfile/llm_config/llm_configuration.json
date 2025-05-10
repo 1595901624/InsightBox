@@ -13,7 +13,7 @@
       "baseUrl": {
         "title": "%baseUrl.title%",
         "description": "%baseUrl.description%",
-        "default": "https://api.openai.com/v1"
+        "default": "https://api.openai.com"
       },
       "model": {
         "title": "%model.title%",
@@ -24,7 +24,23 @@
             "name": "gpt-3.5",
             "type": 1,
             "description": "%model.gpt-3.5.description%",
-            "created": true,
+            "enabled": true,
+            "group": "Base"
+          },
+          {
+            "id": "gpt-4",
+            "name": "gpt-4",
+            "type": 1,
+            "description": "%model.gpt-4.description%",
+            "enabled": true,
+            "group": "Base"
+          },
+          {
+            "id": "gpt-4-turbo",
+            "name": "gpt-4-turbo",
+            "type": 1,
+            "description": "%model.gpt-4-turbo.description%",
+            "enabled": true,
             "group": "Base"
           }
         ]
