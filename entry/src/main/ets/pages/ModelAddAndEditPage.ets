@@ -7,6 +7,7 @@ import { CommonTitleBar } from '../widget/CommonTitleBar'
 import { SafeAreaLayout } from '../widget/SafeAreaLayout'
 import { LengthMetrics } from '@kit.ArkUI'
 import { ModelConfigDataSource } from '../datasource/ModelConfigDataSource'
+import { LLMUserConfig, LLMUserModelGroup, LLMUserModelItem } from '../config/LLMUserConfig'
 
 
 export interface ModelAddAndEditPageParam {
@@ -33,8 +34,20 @@ export struct ModelAddAndEditPage {
   @Local private config: LLMConfig.Config | undefined = undefined
   // 模型的 baseUrl
   @Local private baseUrl: string = ""
+  // 模型的 apiKey（输入的结果）
+  @Local private apiKey: string = ""
   // 模型列表数据源
   @Local private modelListChatDataSource: ModelConfigDataSource = new ModelConfigDataSource()
+
+  // 用户已配置的数据列表
+  // @Local private userConfigModelMap: Map<string, LLMUserConfig> = PersistenceV2.connect(Map
+  // <string
+  // , LLMUserConfig
+  // >, () => new
+  //
+  // Map()
+  //
+  // )!
 
   aboutToAppear(): void {
     const param = HMRouterMgr.getCurrentParam() as ModelAddAndEditPageParam
@@ -59,6 +72,7 @@ export struct ModelAddAndEditPage {
       return
     }
     this.baseUrl = this.config?.properties?.baseUrl?.default ?? ""
+    this.apiKey = this.config?.properties?.apikey?.default ?? ""
     this.modelListChatDataSource.pushList(this.config?.properties?.model?.list ?? [])
   }
 
@@ -70,7 +84,13 @@ export struct ModelAddAndEditPage {
           endText: $r('app.string.llm_save'),
           endTextEnable: true,
           onEndTextClick: () => {
-
+            if (this.type === 'add') {
+              // 新增模型
+              this.create()
+            } else {
+              // 编辑模型
+              this.edit()
+            }
           },
           onBackClick: () => {
             HMRouterMgr.pop()
@@ -118,7 +138,7 @@ export struct ModelAddAndEditPage {
                 .fontSize($r('app.float.font_size_subtitle'))
 
               TextInput({
-                text: this.config?.properties?.apikey?.default,
+                text: this.apiKey,
                 placeholder: $r('app.string.llm_api_key_hint'),
               }).width("100%")
                 .borderRadius(8)
@@ -228,6 +248,56 @@ export struct ModelAddAndEditPage {
       realBaseUrl = this.baseUrl + "/v1/chat/completions"
     }
     return realBaseUrl
+  }
+
+  /**
+   * 创建配置
+   */
+  create() {
+    const userConfig = new LLMUserConfig()
+    // userConfig.id = this.getUserConfigId()
+    userConfig.id = ""
+    userConfig.brandId = this.config?.id ?? 0
+    userConfig.brandName = this.config?.brand ?? ""
+    userConfig.baseUrl = this.getRealBaseUrl()
+    userConfig.apiKey = this.apiKey
+    userConfig.modelList = []
+
+    this.modelListChatDataSource.getDataList().forEach((groupItem => {
+      const modelGroup = new LLMUserModelGroup()
+      modelGroup.name = groupItem.name
+      groupItem.value?.forEach(modelItem => {
+        const model = new LLMUserModelItem()
+        model.id = modelItem.id
+        model.type = modelItem.type
+        model.name = modelItem.name
+        model.enabled = modelItem.enabled
+        modelGroup.value?.push(model)
+      })
+      userConfig.modelList?.push(modelGroup)
+    }))
+
+    // this.userConfigModelMap.set(userConfig.id, userConfig)
+    // PersistenceV2.save(Map<
+    // string, LLMUserConfig >
+    // )
+
+    HMRouterMgr.pop()
+  }
+
+  getUserConfigId() {
+    // while (true) {
+    //   const id = util.generateRandomUUID(true)
+    //   if (!this.userConfigModelMap.has(id)) {
+    //     return id
+    //   }
+    // }
+  }
+
+  /**
+   * 编辑配置
+   */
+  edit() {
   }
 
   @Styles

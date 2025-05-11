@@ -132,11 +132,6 @@ export namespace LLMConfig {
     id: string;
 
     /**
-     * 模型分组名称
-     */
-    group?: string;
-
-    /**
      * 模型类型
      */
     type?: ModelType;

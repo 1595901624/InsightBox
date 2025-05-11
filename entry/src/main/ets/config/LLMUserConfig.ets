@@ -1,6 +1,11 @@
 import { LLMConfig } from './LLMConfig';
 
+@ObservedV2
 export class LLMUserConfig {
+  /**
+   * 配置id(唯一)
+   */
+  id: string = "";
   brandId?: number;
   brandName?: string;
   baseUrl?: string;
@@ -9,12 +14,13 @@ export class LLMUserConfig {
 }
 
 
+@ObservedV2
 export class LLMUserModelGroup {
-  enable?: boolean;
   name?: string;
   value?: LLMUserModelItem[];
 }
 
+@ObservedV2
 export class LLMUserModelItem {
   id?: string;
   type?: LLMConfig.ModelType;
