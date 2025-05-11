@@ -57,8 +57,23 @@ export class LLMUserConfig {
   /**
    * LLM 模型列表
    */
+
   @Convert({ converter: ModelListTypeConvert, columnType: ColumnType.str })
   modelList?: LLMUserModelGroup[];
+
+  constructor(
+    id?: number,
+    brandId?: number,
+    brandName?: string,
+    baseUrl?: string,
+    apiKey?: string,
+  ) {
+    this.id = id;
+    this.brandId = brandId;
+    this.brandName = brandName;
+    this.baseUrl = baseUrl;
+    this.apiKey = apiKey;
+  }
 }
 
 export class LLMUserModelGroup {

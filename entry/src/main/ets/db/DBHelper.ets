@@ -1,18 +1,23 @@
 import { DaoMaster, DaoSession, Database, OpenHelper } from '@ohos/dataorm';
 import { GlobalUtil } from '../util/GlobalUtil';
+import { log } from '../util/LogUtil';
 import { LLMUserConfig } from './entity/LLMUserConfig';
 
 export class DBHelper extends OpenHelper {
   private static daoSession: DaoSession | undefined;
 
   static async init() {
-    const helper: DBHelper = new DBHelper(GlobalUtil.getApplicationContext(), "insight_box.db")
-    helper.setEntities(LLMUserConfig)
-    const db = await helper.getWritableDb()
-    DBHelper.daoSession = new DaoMaster(db).newSession()
+    try {
+      const helper: DBHelper = new DBHelper(GlobalUtil.getUIAbilityContext(), "insight_box.db")
+      helper.setEntities(LLMUserConfig)
+      const db = await helper.getWritableDb()
+      DBHelper.daoSession = new DaoMaster(db).newSession()
+    } catch (e) {
+      log.error('DBHelper', `init DB error: ${e?.code} ${e?.message} ${e?.stack}`)
+    }
   }
 
-  getDaoSession(): DaoSession {
+  static getDaoSession(): DaoSession {
     return DBHelper.daoSession!
   }
 
