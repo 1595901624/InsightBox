@@ -7,7 +7,6 @@ import { CommonTitleBar } from '../widget/CommonTitleBar'
 import { SafeAreaLayout } from '../widget/SafeAreaLayout'
 import { LengthMetrics } from '@kit.ArkUI'
 import { ModelConfigDataSource } from '../datasource/ModelConfigDataSource'
-import { LLMUserConfig, LLMUserModelGroup, LLMUserModelItem } from '../config/LLMUserConfig'
 
 
 export interface ModelAddAndEditPageParam {
@@ -254,28 +253,28 @@ export struct ModelAddAndEditPage {
    * 创建配置
    */
   create() {
-    const userConfig = new LLMUserConfig()
-    // userConfig.id = this.getUserConfigId()
-    userConfig.id = ""
-    userConfig.brandId = this.config?.id ?? 0
-    userConfig.brandName = this.config?.brand ?? ""
-    userConfig.baseUrl = this.getRealBaseUrl()
-    userConfig.apiKey = this.apiKey
-    userConfig.modelList = []
-
-    this.modelListChatDataSource.getDataList().forEach((groupItem => {
-      const modelGroup = new LLMUserModelGroup()
-      modelGroup.name = groupItem.name
-      groupItem.value?.forEach(modelItem => {
-        const model = new LLMUserModelItem()
-        model.id = modelItem.id
-        model.type = modelItem.type
-        model.name = modelItem.name
-        model.enabled = modelItem.enabled
-        modelGroup.value?.push(model)
-      })
-      userConfig.modelList?.push(modelGroup)
-    }))
+    // const userConfig = new LLMUserConfig()
+    // // userConfig.id = this.getUserConfigId()
+    // userConfig.id = ""
+    // userConfig.brandId = this.config?.id ?? 0
+    // userConfig.brandName = this.config?.brand ?? ""
+    // userConfig.baseUrl = this.getRealBaseUrl()
+    // userConfig.apiKey = this.apiKey
+    // userConfig.modelList = []
+    //
+    // this.modelListChatDataSource.getDataList().forEach((groupItem => {
+    //   const modelGroup = new LLMUserModelGroup()
+    //   modelGroup.name = groupItem.name
+    //   groupItem.value?.forEach(modelItem => {
+    //     const model = new LLMUserModelItem()
+    //     model.id = modelItem.id
+    //     model.type = modelItem.type
+    //     model.name = modelItem.name
+    //     model.enabled = modelItem.enabled
+    //     modelGroup.value?.push(model)
+    //   })
+    //   userConfig.modelList?.push(modelGroup)
+    // }))
 
     // this.userConfigModelMap.set(userConfig.id, userConfig)
     // PersistenceV2.save(Map<

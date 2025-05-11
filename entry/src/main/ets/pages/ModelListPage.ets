@@ -2,9 +2,8 @@ import { HMRouter, HMRouterMgr } from '@hadss/hmrouter'
 import { PageConstant } from '../constant/PageConstant'
 import { CommonTitleBar } from '../widget/CommonTitleBar'
 import { SafeAreaLayout } from '../widget/SafeAreaLayout'
-import { LengthMetrics, PersistenceV2 } from '@kit.ArkUI'
+import { LengthMetrics } from '@kit.ArkUI'
 import { ModelAddAndEditPageParam } from './ModelAddAndEditPage'
-import { LLMUserConfig } from '../config/LLMUserConfig'
 
 /**
  * 模型设置页面
@@ -13,14 +12,6 @@ import { LLMUserConfig } from '../config/LLMUserConfig'
 @ComponentV2
 export struct ModelListPage {
   // 用户已配置的数据列表
-  @Local private userConfigModelList: Map<string, LLMUserConfig> = PersistenceV2.connect(Map
-  <string
-  , LLMUserConfig
-  >, () => new
-
-  Map()
-
-  )!
 
   build() {
     SafeAreaLayout() {

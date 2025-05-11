@@ -6,7 +6,8 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "@cloris/drawerlayout": "file:../drawerlayout"
+    "@cloris/drawerlayout": "file:../drawerlayout",
+    "@ohos/dataorm": "2.2.6"
   }
 }
 
