@@ -1,15 +1,23 @@
+import { LLMConfig } from './LLMConfig';
+
 export class LLMUserConfig {
   brandId?: number;
   brandName?: string;
   baseUrl?: string;
   apiKey?: string;
-  modelList?: LLMUserModel[];
+  modelList?: LLMUserModelGroup[];
 }
 
 
-export class LLMUserModel {
+export class LLMUserModelGroup {
   enable?: boolean;
   name?: string;
+  value?: LLMUserModelItem[];
+}
+
+export class LLMUserModelItem {
   id?: string;
-  group?: string;
+  type?: LLMConfig.ModelType;
+  name?: string;
+  enabled?: boolean;
 }

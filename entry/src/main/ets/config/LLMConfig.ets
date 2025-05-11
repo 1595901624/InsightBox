@@ -110,6 +110,18 @@ export namespace LLMConfig {
     list?: ModelItem[];
   }
 
+  export interface ModelGroup extends Base {
+    /**
+     * 模型分组名称
+     */
+    name?: string;
+
+    /**
+     * 模型列表
+     */
+    value?: ModelItem[];
+  }
+
   /**
    * 模型配置项
    */

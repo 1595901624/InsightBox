@@ -4,5 +4,5 @@ import { LLMConfig } from '../config/LLMConfig';
 /**
  * ModelConfigDataSource
  */
-export class ModelConfigDataSource extends BasicDataSource<LLMConfig.ModelItem> {
+export class ModelConfigDataSource extends BasicDataSource<LLMConfig.ModelGroup> {
 }

@@ -135,33 +135,41 @@ export struct ModelAddAndEditPage {
                 .fontSize($r('app.float.font_size_subtitle'))
 
               List() {
-                LazyForEach(this.modelListChatDataSource, (item: LLMConfig.ModelItem) => {
-                  ListItem() {
-                    Row() {
-                      Text(item.name)
-                        .fontSize($r('app.float.font_size_subtitle'))
-                        .fontWeight(FontWeight.Bold)
-                      Blank()
-                      Toggle({
-                        isOn: item.enabled,
-                        type: ToggleType.Switch
+                LazyForEach(this.modelListChatDataSource, (groupItem: LLMConfig.ModelGroup) => {
+                  ListItemGroup({
+                    header: this.ModelGroupHeader(groupItem),
+                  }) {
+                    ForEach(groupItem.value, (modelItem: LLMConfig.ModelItem) => {
+                      ListItem() {
+                        Row() {
+                          Text(modelItem.name)
+                            .fontSize($r('app.float.font_size_subtitle'))
+                            .fontWeight(FontWeight.Bold)
+                          Blank()
+                          Toggle({
+                            isOn: modelItem.enabled,
+                            type: ToggleType.Switch
+                          })
+                        }
+                        .padding({
+                          start: LengthMetrics.vp(16),
+                          end: LengthMetrics.vp(16),
+                          top: LengthMetrics.vp(16),
+                          bottom: LengthMetrics.vp(16)
+                        })
+                        .borderRadius(8)
+                        .backgroundColor($r('app.color.list_item_bg_color'))
+                        .width("100%")
+                      }.margin({
+                        top: LengthMetrics.vp(4),
+                        bottom: LengthMetrics.vp(4)
                       })
-                    }
-                    .padding({
-                      start: LengthMetrics.vp(16),
-                      end: LengthMetrics.vp(16),
-                      top: LengthMetrics.vp(16),
-                      bottom: LengthMetrics.vp(16)
                     })
-                    .borderRadius(8)
-                    .backgroundColor($r('app.color.list_item_bg_color'))
-                    .width("100%")
-                  }.margin({
-                    top: LengthMetrics.vp(4),
-                    bottom: LengthMetrics.vp(4)
-                  })
+                  }
                 })
               }
+              .layoutWeight(1)
+              .scrollBar(BarState.Off)
             }.alignItems(HorizontalAlign.Start)
             .width("100%")
           }
@@ -193,6 +201,17 @@ export struct ModelAddAndEditPage {
         })
       }
     }
+  }
+
+  @Builder
+  ModelGroupHeader(item: LLMConfig.ModelGroup) {
+    Text(item.name ?? "")
+      .fontSize($r('app.float.font_size_caption'))
+      .padding({
+        top: LengthMetrics.vp(2),
+        bottom: LengthMetrics.vp(2)
+      })
+      .width("100%")
   }
 
   /**
