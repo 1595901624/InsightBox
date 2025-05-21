@@ -1,6 +1,7 @@
 {
   "scanDir": [
     "src/main/ets/pages",
-    "src/main/ets/widgets"
+    "src/main/ets/widgets",
+    "src/main/ets/lifecycle"
   ]
 }

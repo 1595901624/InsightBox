@@ -1,9 +1,12 @@
-import { HMRouter, HMRouterMgr } from '@hadss/hmrouter'
+import { HMLifecycleState, HMRouter, HMRouterMgr } from '@hadss/hmrouter'
 import { PageConstant } from '../constant/PageConstant'
 import { CommonTitleBar } from '../widget/CommonTitleBar'
 import { SafeAreaLayout } from '../widget/SafeAreaLayout'
 import { LengthMetrics } from '@kit.ArkUI'
 import { ModelAddAndEditPageParam } from './ModelAddAndEditPage'
+import { LLMUserConfig } from '../db/entity/LLMUserConfig'
+import { LLMUserConfigTBUtil } from '../db/LLMUserConfigTBUtil'
+import { log } from '../util/LogUtil'
 
 /**
  * 模型设置页面
@@ -12,6 +15,19 @@ import { ModelAddAndEditPageParam } from './ModelAddAndEditPage'
 @ComponentV2
 export struct ModelListPage {
   // 用户已配置的数据列表
+  // @Local private viewModel: ModelListPageLifeCycle | undefined =
+  //   (HMRouterMgr.getCurrentLifecycleOwner()?.getLifecycle() as ModelListPageLifeCycle | undefined)
+  @Local private llmUserConfigList: LLMUserConfig[] = []
+
+  aboutToAppear(): void {
+    HMRouterMgr.getCurrentLifecycleOwner()?.addObserver(HMLifecycleState.onShown, () => {
+      this.onPageShow()
+    })
+  }
+
+  aboutToDisappear(): void {
+    HMRouterMgr.getCurrentLifecycleOwner()?.removeObserver(HMLifecycleState.onShown)
+  }
 
   build() {
     SafeAreaLayout() {
@@ -21,6 +37,26 @@ export struct ModelListPage {
           onBackClick: () => {
             HMRouterMgr.pop()
           }
+        })
+          .id('title_bar')
+
+
+        List() {
+          ForEach(this.llmUserConfigList ?? [], (item: LLMUserConfig) => {
+            ListItem() {
+              Text(item.id + '--' + item.brandName)
+            }
+          })
+        }
+        .alignRules({
+          top: {
+            anchor: "title_bar",
+            align: VerticalAlign.Bottom
+          },
+          bottom: {
+            anchor: "__container__",
+            align: VerticalAlign.Bottom
+          },
         })
 
         // 添加
@@ -58,12 +94,21 @@ export struct ModelListPage {
             bottom: LengthMetrics.vp(20),
             end: LengthMetrics.vp(20)
           })
-
-        List() {
-
-        }
       }
     }
+  }
+
+  onPageShow(): void {
+    LLMUserConfigTBUtil.getInstance().queryAll()
+      .then((llmUserConfigList) => {
+        this.llmUserConfigList = llmUserConfigList;
+        // 处理查询结果
+        log.info('Query result:', JSON.stringify(llmUserConfigList, null, 2));
+      })
+      .catch((error: Error) => {
+        // 处理错误
+        log.error('Error querying data:', error);
+      });
   }
 
   @Styles

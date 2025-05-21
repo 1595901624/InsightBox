@@ -8,7 +8,7 @@ import { SafeAreaLayout } from '../widget/SafeAreaLayout'
 import { LengthMetrics } from '@kit.ArkUI'
 import { ModelConfigDataSource } from '../datasource/ModelConfigDataSource'
 import { LLMUserConfig, LLMUserModelGroup, LLMUserModelItem } from '../db/entity/LLMUserConfig'
-import { DBHelper } from '../db/DBHelper'
+import { LLMUserConfigTBUtil } from '../db/LLMUserConfigTBUtil'
 
 
 export interface ModelAddAndEditPageParam {
@@ -280,13 +280,21 @@ export struct ModelAddAndEditPage {
     }))
 
     // 插入一条数据
-    DBHelper.getDaoSession().insert(userConfig)
+    // DBHelper.getDaoSession().insert(userConfig)
     // this.userConfigModelMap.set(userConfig.id, userConfig)
     // PersistenceV2.save(Map<
     // string, LLMUserConfig >
     // )
 
-    HMRouterMgr.pop()
+    LLMUserConfigTBUtil.getInstance().insert(userConfig)
+      .then((id: number) => {
+        log.info(`ModelAddAndEditPage: create, insert success, id: ${id}`)
+        HMRouterMgr.pop()
+      })
+      .catch((error: Error) => {
+        log.error(`ModelAddAndEditPage: create, insert error, error: ${error?.message}\n${error?.stack}`)
+      })
+
   }
 
   getUserConfigId() {
