@@ -1,5 +1,7 @@
 import { Columns, ColumnType, Convert, Entity, Id, PropertyConverter } from '@ohos/dataorm';
 import { LLMConfig } from '../../config/LLMConfig';
+import ArrayList from '@ohos.util.ArrayList';
+import { log } from '../../util/LogUtil';
 
 export class ModelListTypeConvert extends PropertyConverter<LLMUserModelGroup[], String> {
   convertToDatabaseValue(entityProperty: LLMUserModelGroup[]): string {
@@ -60,6 +62,14 @@ export class LLMUserConfig {
 
   @Convert({ converter: ModelListTypeConvert, columnType: ColumnType.str })
   modelList?: LLMUserModelGroup[];
+  /**
+   * 配置别名
+   */
+  @Columns({
+    columnName: "alias",
+    types: ColumnType.str,
+  })
+  alias?: string = "";
 
   constructor(
     id?: number,
@@ -67,12 +77,16 @@ export class LLMUserConfig {
     brandName?: string,
     baseUrl?: string,
     apiKey?: string,
+    alias?: string,
+    modelList?: LLMUserModelGroup[],
   ) {
     this.id = id;
     this.brandId = brandId;
     this.brandName = brandName;
     this.baseUrl = baseUrl;
     this.apiKey = apiKey;
+    this.alias = alias;
+    this.modelList = modelList;
   }
 }
 

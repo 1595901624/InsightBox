@@ -265,6 +265,7 @@ export struct ModelAddAndEditPage {
     this.modelListChatDataSource.getDataList().forEach((groupItem => {
       const modelGroup = new LLMUserModelGroup()
       modelGroup.name = groupItem.name
+      modelGroup.value = []
       groupItem.value?.forEach(modelItem => {
         if (modelItem.enabled === false) {
           return
