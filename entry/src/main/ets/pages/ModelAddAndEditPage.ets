@@ -50,16 +50,6 @@ export struct ModelAddAndEditPage {
   // 用户编辑模型列表数据源（编辑时必存在）
   private editConfig: LLMUserConfig | undefined = undefined
 
-  // 用户已配置的数据列表
-  // @Local private userConfigModelMap: Map<string, LLMUserConfig> = PersistenceV2.connect(Map
-  // <string
-  // , LLMUserConfig
-  // >, () => new
-  //
-  // Map()
-  //
-  // )!
-
   aboutToAppear(): void {
     const param = HMRouterMgr.getCurrentParam() as ModelAddAndEditPageParam
     if (param == undefined) {
@@ -215,6 +205,9 @@ export struct ModelAddAndEditPage {
                           Toggle({
                             isOn: modelItem.enabled,
                             type: ToggleType.Switch
+                          }).onChange((value: boolean) => {
+                            modelItem.enabled = value
+                            this.modelListChatDataSource.notifyDataReload()
                           })
                         }
                         .padding({
