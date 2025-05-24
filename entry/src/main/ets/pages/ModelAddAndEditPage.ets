@@ -10,6 +10,7 @@ import { ModelConfigDataSource } from '../datasource/ModelConfigDataSource'
 import { LLMUserConfig, LLMUserModelGroup, LLMUserModelItem } from '../db/entity/LLMUserConfig'
 import { LLMUserConfigTBUtil } from '../db/LLMUserConfigTBUtil'
 import { stringUtil } from '../util/StringUtil'
+import { deepClone } from '../util/Extend'
 
 
 export interface ModelAddAndEditPageParam {
@@ -72,7 +73,8 @@ export struct ModelAddAndEditPage {
       HMRouterMgr.pop()
       return
     }
-    this.modelListChatDataSource.pushList(this.config?.properties?.model?.list ?? [])
+    const configList = this.config?.properties?.model?.list ?? []
+    this.modelListChatDataSource.pushList(deepClone(configList))
 
     if (this.type === 'edit') {
       // 编辑模型
@@ -83,6 +85,23 @@ export struct ModelAddAndEditPage {
         this.baseUrl = param.editConfig.baseUrl ?? ""
         this.apiKey = param.editConfig.apiKey ?? ""
         // this.modelListChatDataSource.pushList(param.editConfig.modelList ?? [])
+        // 刷新开关配置
+        // 需要优化，按照用户模型去展示列表
+        this.modelListChatDataSource.getDataList().forEach((groupItem: LLMConfig.ModelGroup) => {
+          groupItem.value?.forEach((modelItem: LLMConfig.ModelItem) => {
+            const editModel = param.editConfig?.modelList?.find((editGroup) => {
+              return editGroup.name === groupItem.name
+            })?.value?.find((editModel) => {
+              return editModel.id === modelItem.id
+            })
+            if (editModel != undefined) {
+              modelItem.enabled = editModel.enabled
+            } else {
+              modelItem.enabled = false // 如果没有找到编辑的模型，默认关闭
+            }
+          })
+        })
+        this.modelListChatDataSource.notifyDataReload()
       } else {
         // 如果没有编辑的配置，使用默认配置
         this.alias = $r('app.string.llm_alias_default')
