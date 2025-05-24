@@ -72,7 +72,8 @@ export struct ModelListPage {
                   pageUrl: PageConstant.PAGE_MODEL_ADD_EDIT,
                   param: {
                     type: 'edit',
-                    brandId: item.brandId
+                    brandId: item.brandId,
+                    editConfig: item,
                   } as ModelAddAndEditPageParam
                 })
               })

@@ -22,6 +22,11 @@ export interface ModelAddAndEditPageParam {
    * 新增或者编辑的品牌id
    */
   brandId?: number,
+
+  /**
+   * 编辑的模型配置
+   */
+  editConfig?: LLMUserConfig
 }
 
 /**
@@ -42,6 +47,8 @@ export struct ModelAddAndEditPage {
   @Local private alias: ResourceStr = $r('app.string.llm_alias_default')
   // 模型列表数据源
   @Local private modelListChatDataSource: ModelConfigDataSource = new ModelConfigDataSource()
+  // 用户编辑模型列表数据源（编辑时必存在）
+  private editConfig: LLMUserConfig | undefined = undefined
 
   // 用户已配置的数据列表
   // @Local private userConfigModelMap: Map<string, LLMUserConfig> = PersistenceV2.connect(Map
@@ -75,9 +82,29 @@ export struct ModelAddAndEditPage {
       HMRouterMgr.pop()
       return
     }
-    this.baseUrl = this.config?.properties?.baseUrl?.default ?? ""
-    this.apiKey = this.config?.properties?.apikey?.default ?? ""
     this.modelListChatDataSource.pushList(this.config?.properties?.model?.list ?? [])
+
+    if (this.type === 'edit') {
+      // 编辑模型
+      if (param.editConfig != undefined) {
+        // 如果有编辑的配置，使用编辑的配置
+        this.editConfig = param.editConfig
+        this.alias = param.editConfig.alias ?? $r('app.string.llm_alias_default')
+        this.baseUrl = param.editConfig.baseUrl ?? ""
+        this.apiKey = param.editConfig.apiKey ?? ""
+        // this.modelListChatDataSource.pushList(param.editConfig.modelList ?? [])
+      } else {
+        // 如果没有编辑的配置，使用默认配置
+        this.alias = $r('app.string.llm_alias_default')
+        this.baseUrl = this.config?.properties?.baseUrl?.default ?? ""
+        this.apiKey = this.config?.properties?.apikey?.default ?? ""
+      }
+    } else {
+      // 新增模型，使用默认配置
+      this.alias = $r('app.string.llm_alias_default')
+      this.baseUrl = this.config?.properties?.baseUrl?.default ?? ""
+      this.apiKey = this.config?.properties?.apikey?.default ?? ""
+    }
   }
 
   build() {
@@ -88,7 +115,7 @@ export struct ModelAddAndEditPage {
           endText: $r('app.string.llm_save'),
           endTextEnable: true,
           onEndTextClick: () => {
-            if (this.type === 'add') {
+            if (this.type === 'add' || this.editConfig == undefined) {
               // 新增模型
               this.create()
             } else {
@@ -157,7 +184,7 @@ export struct ModelAddAndEditPage {
                 .fontSize($r('app.float.font_size_subtitle'))
 
               TextInput({
-                text: this.apiKey,
+                text: $$this.apiKey,
                 placeholder: $r('app.string.llm_api_key_hint'),
               }).width("100%")
                 .borderRadius(8)
@@ -299,13 +326,7 @@ export struct ModelAddAndEditPage {
       userConfig.modelList?.push(modelGroup)
     }))
 
-    // 插入一条数据
-    // DBHelper.getDaoSession().insert(userConfig)
-    // this.userConfigModelMap.set(userConfig.id, userConfig)
-    // PersistenceV2.save(Map<
-    // string, LLMUserConfig >
-    // )
-
+    // 新增模型
     LLMUserConfigTBUtil.getInstance().insert(userConfig)
       .then((id: number) => {
         log.info(`ModelAddAndEditPage: create, insert success, id: ${id}`)
@@ -314,22 +335,45 @@ export struct ModelAddAndEditPage {
       .catch((error: Error) => {
         log.error(`ModelAddAndEditPage: create, insert error, error: ${error?.message}\n${error?.stack}`)
       })
-
-  }
-
-  getUserConfigId() {
-    // while (true) {
-    //   const id = util.generateRandomUUID(true)
-    //   if (!this.userConfigModelMap.has(id)) {
-    //     return id
-    //   }
-    // }
   }
 
   /**
    * 编辑配置
    */
   edit() {
+    const userConfig = this.editConfig!!
+    userConfig.brandId = this.config?.id ?? 0
+    userConfig.brandName = this.config?.brand ?? ""
+    userConfig.baseUrl = this.getRealBaseUrl()
+    userConfig.apiKey = this.apiKey
+    userConfig.alias = stringUtil.getString(this.alias)
+    userConfig.modelList = []
+
+    this.modelListChatDataSource.getDataList().forEach((groupItem => {
+      const modelGroup = new LLMUserModelGroup()
+      modelGroup.name = groupItem.name
+      modelGroup.value = []
+      groupItem.value?.forEach(modelItem => {
+        if (modelItem.enabled === false) {
+          return
+        }
+        const model = new LLMUserModelItem()
+        model.id = modelItem.id
+        model.type = modelItem.type
+        model.name = modelItem.name
+        model.enabled = modelItem.enabled
+        modelGroup.value?.push(model)
+      })
+      userConfig.modelList?.push(modelGroup)
+    }))
+    LLMUserConfigTBUtil.getInstance().insert(userConfig)
+      .then((id) => {
+        log.info(`ModelAddAndEditPage: edit, update success, id: ${id}`)
+        HMRouterMgr.pop()
+      })
+      .catch((error: Error) => {
+        log.error(`ModelAddAndEditPage: edit, update error: ${error.message}`)
+      })
   }
 
   @Styles
