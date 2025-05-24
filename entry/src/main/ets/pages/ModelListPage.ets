@@ -44,10 +44,50 @@ export struct ModelListPage {
         List() {
           ForEach(this.llmUserConfigList ?? [], (item: LLMUserConfig) => {
             ListItem() {
-              Text(item.id + '--' + item.brandName)
+              // Text(item.id + '--' + item.brandName)
+              Row() {
+                Button() {
+                  Text(item.alias + '(' + item.brandName + ')')
+                    .fontSize(16)
+                    .width("100%")
+                    .textAlign(TextAlign.Start)
+                    .maxLines(1)
+                    .padding({
+                      start: LengthMetrics.vp(20),
+                      end: LengthMetrics.vp(20)
+                    })
+                }
+                .type(ButtonType.Normal)
+                .borderRadius(8)
+                .backgroundColor(Color.Transparent)
+                .height(60)
+                .width("100%")
+              }
+              .backgroundColor(Color.White)
+              .alignItems(VerticalAlign.Center)
+              .borderRadius(8)
+              .onClick(() => {
+                // 跳转到编辑页面
+                HMRouterMgr.push({
+                  pageUrl: PageConstant.PAGE_MODEL_ADD_EDIT,
+                  param: {
+                    type: 'edit',
+                    brandId: item.brandId
+                  } as ModelAddAndEditPageParam
+                })
+              })
             }
+            .padding({
+              start: LengthMetrics.vp(20),
+              end: LengthMetrics.vp(20)
+            })
           })
         }
+        .scrollBar(BarState.Off)
+        .divider({
+          strokeWidth: 8,
+          color: Color.Transparent
+        })
         .alignRules({
           top: {
             anchor: "title_bar",

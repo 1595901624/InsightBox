@@ -9,6 +9,7 @@ import { LengthMetrics } from '@kit.ArkUI'
 import { ModelConfigDataSource } from '../datasource/ModelConfigDataSource'
 import { LLMUserConfig, LLMUserModelGroup, LLMUserModelItem } from '../db/entity/LLMUserConfig'
 import { LLMUserConfigTBUtil } from '../db/LLMUserConfigTBUtil'
+import { stringUtil } from '../util/StringUtil'
 
 
 export interface ModelAddAndEditPageParam {
@@ -37,6 +38,8 @@ export struct ModelAddAndEditPage {
   @Local private baseUrl: string = ""
   // 模型的 apiKey（输入的结果）
   @Local private apiKey: string = ""
+  // 模型的别名
+  @Local private alias: ResourceStr = $r('app.string.llm_alias_default')
   // 模型列表数据源
   @Local private modelListChatDataSource: ModelConfigDataSource = new ModelConfigDataSource()
 
@@ -98,7 +101,6 @@ export struct ModelAddAndEditPage {
           }
         })
           .id('title_bar')
-
         // 添加或者编辑的模型配置
         Column({
           space: 16
@@ -107,6 +109,22 @@ export struct ModelAddAndEditPage {
           $r('app.string.llm_edit_any', this.config?.brand ?? ""))
             .fontSize($r('app.float.font_size_subtitle'))
             .fontWeight(FontWeight.Bold)
+
+          // 别名
+          Column({
+            space: 8
+          }) {
+            Text($r('app.string.llm_alias'))
+              .fontSize($r('app.float.font_size_subtitle'))
+
+            TextInput({
+              text: $$this.alias,
+              placeholder: $r('app.string.llm_alias_hint'),
+            }).width("100%")
+              .borderRadius(8)
+
+          }.alignItems(HorizontalAlign.Start)
+          .width("100%")
 
           // API 地址
           if (this.config?.properties?.baseUrl != undefined) {
@@ -260,6 +278,7 @@ export struct ModelAddAndEditPage {
     userConfig.brandName = this.config?.brand ?? ""
     userConfig.baseUrl = this.getRealBaseUrl()
     userConfig.apiKey = this.apiKey
+    userConfig.alias = stringUtil.getString(this.alias)
     userConfig.modelList = []
 
     this.modelListChatDataSource.getDataList().forEach((groupItem => {

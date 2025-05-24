@@ -69,8 +69,20 @@
       "value": "API 地址"
     },
     {
+      "name": "llm_alias",
+      "value": "名称"
+    },
+    {
+      "name": "llm_alias_hint",
+      "value": "请输入该配置的名称"
+    },
+    {
       "name": "llm_base_url_hint",
       "value": "请输入 API 地址"
+    },
+    {
+      "name": "llm_alias_default",
+      "value": "默认配置"
     },
     {
       "name": "llm_base_url_empty",
