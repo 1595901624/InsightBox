@@ -28,10 +28,10 @@ export class LLMUserConfigTBUtil {
   }
 
   /**
-   * 插入数据
+   * 插入或者更新数据
    * @param id
    */
-  insert(llmUserConfig: LLMUserConfig): Promise<number> {
+  insertOrReplace(llmUserConfig: LLMUserConfig): Promise<number> {
     return DBHelper
       .getDaoSession()
       .getBaseDao<LLMUserConfig, string>(LLMUserConfig)

@@ -319,6 +319,7 @@ export struct ModelAddAndEditPage {
    */
   create() {
     const userConfig = new LLMUserConfig()
+    userConfig.enable = 1
     userConfig.brandId = this.config?.id ?? 0
     userConfig.brandName = this.config?.brand ?? ""
     userConfig.baseUrl = this.baseUrl
@@ -326,27 +327,8 @@ export struct ModelAddAndEditPage {
     userConfig.alias = stringUtil.getString(this.alias)
     userConfig.modelList = this.modelListChatDataSource.getDataList()
 
-    // this.modelListChatDataSource.getDataList().forEach((groupItem => {
-    //   const modelGroup: LLMConfig.ModelGroup = {}
-    //   modelGroup.name = groupItem.name
-    //   modelGroup.value = []
-    //   groupItem.value?.forEach(modelItem => {
-    //     if (modelItem.enabled === false) {
-    //       return
-    //     }
-    //     const model: LLMConfig.ModelItem = {
-    //       id: modelItem.id
-    //     }
-    //     model.type = modelItem.type
-    //     model.name = modelItem.name
-    //     model.enabled = modelItem.enabled
-    //     modelGroup.value?.push(model)
-    //   })
-    //   userConfig.modelList?.push(modelGroup)
-    // }))
-
     // 新增模型
-    LLMUserConfigTBUtil.getInstance().insert(userConfig)
+    LLMUserConfigTBUtil.getInstance().insertOrReplace(userConfig)
       .then((id: number) => {
         log.info(`ModelAddAndEditPage: create, insert success, id: ${id}`)
         HMRouterMgr.getPathStack(PageConstant.NAVIGATION_ID_MAIN)?.popToName(PageConstant.PAGE_MODEL_LIST)
@@ -368,25 +350,7 @@ export struct ModelAddAndEditPage {
     userConfig.alias = stringUtil.getString(this.alias)
     userConfig.modelList = this.modelListChatDataSource.getDataList()
 
-    // this.modelListChatDataSource.getDataList().forEach((groupItem => {
-    //   const modelGroup: LLMConfig.ModelGroup = {}
-    //   modelGroup.name = groupItem.name
-    //   modelGroup.value = []
-    //   groupItem.value?.forEach(modelItem => {
-    //     if (modelItem.enabled === false) {
-    //       return
-    //     }
-    //     const model: LLMConfig.ModelItem = {
-    //       'id': modelItem.id
-    //     }
-    //     model.type = modelItem.type
-    //     model.name = modelItem.name
-    //     model.enabled = modelItem.enabled
-    //     modelGroup.value?.push(model)
-    //   })
-    //   userConfig.modelList?.push(modelGroup)
-    // }))
-    LLMUserConfigTBUtil.getInstance().insert(userConfig)
+    LLMUserConfigTBUtil.getInstance().insertOrReplace(userConfig)
       .then((id) => {
         log.info(`ModelAddAndEditPage: edit, update success, id: ${id}`)
         HMRouterMgr.pop()

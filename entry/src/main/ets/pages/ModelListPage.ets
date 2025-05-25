@@ -47,15 +47,33 @@ export struct ModelListPage {
               // Text(item.id + '--' + item.brandName)
               Row() {
                 Button() {
-                  Text(item.alias + '(' + item.brandName + ')')
-                    .fontSize(16)
-                    .width("100%")
-                    .textAlign(TextAlign.Start)
-                    .maxLines(1)
-                    .padding({
-                      start: LengthMetrics.vp(20),
-                      end: LengthMetrics.vp(20)
+                  Row() {
+                    Text(item.alias + '(' + item.brandName + ')')
+                      .fontSize(16)
+                      .textAlign(TextAlign.Start)
+                      .maxLines(1)
+                    Blank()
+                    Toggle({
+                      isOn: item.enable == 1,
+                      type: ToggleType.Switch
                     })
+                      .onChange((isOn: boolean) => {
+                        // 更新数据
+                        item.enable = isOn ? 1 : 0
+                        LLMUserConfigTBUtil.getInstance().insertOrReplace(item)
+                          .then(() => {
+                            log.info('Update success:', JSON.stringify(item, null, 2));
+                          })
+                          .catch((error: Error) => {
+                            log.error('Error updating data:', error);
+                          });
+                      })
+                  }
+                  .width("100%")
+                  .padding({
+                    start: LengthMetrics.vp(20),
+                    end: LengthMetrics.vp(20)
+                  })
                 }
                 .type(ButtonType.Normal)
                 .borderRadius(8)

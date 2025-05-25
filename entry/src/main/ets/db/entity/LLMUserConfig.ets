@@ -68,6 +68,15 @@ export class LLMUserConfig {
     types: ColumnType.str,
   })
   alias?: string = "";
+  /**
+   * 是否启用
+   * 1:启用 0:禁用
+   */
+  @Columns({
+    columnName: "enable",
+    types: ColumnType.num,
+  })
+  enable?: number = 1;
 
   constructor(
     id?: number,
@@ -77,6 +86,7 @@ export class LLMUserConfig {
     apiKey?: string,
     alias?: string,
     modelList?: LLMConfig.ModelGroup[],
+    enable?: number,
   ) {
     this.id = id;
     this.brandId = brandId;
@@ -85,6 +95,7 @@ export class LLMUserConfig {
     this.apiKey = apiKey;
     this.alias = alias;
     this.modelList = modelList;
+    this.enable = enable;
   }
 }
 
