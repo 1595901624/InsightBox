@@ -7,7 +7,7 @@ import { CommonTitleBar } from '../widget/CommonTitleBar'
 import { SafeAreaLayout } from '../widget/SafeAreaLayout'
 import { LengthMetrics } from '@kit.ArkUI'
 import { ModelConfigDataSource } from '../datasource/ModelConfigDataSource'
-import { LLMUserConfig, LLMUserModelGroup, LLMUserModelItem } from '../db/entity/LLMUserConfig'
+import { LLMUserConfig } from '../db/entity/LLMUserConfig'
 import { LLMUserConfigTBUtil } from '../db/LLMUserConfigTBUtil'
 import { stringUtil } from '../util/StringUtil'
 import { deepClone } from '../util/Extend'
@@ -73,8 +73,6 @@ export struct ModelAddAndEditPage {
       HMRouterMgr.pop()
       return
     }
-    const configList = this.config?.properties?.model?.list ?? []
-    this.modelListChatDataSource.pushList(deepClone(configList))
 
     if (this.type === 'edit') {
       // 编辑模型
@@ -87,32 +85,40 @@ export struct ModelAddAndEditPage {
         // this.modelListChatDataSource.pushList(param.editConfig.modelList ?? [])
         // 刷新开关配置
         // 需要优化，按照用户模型去展示列表
-        this.modelListChatDataSource.getDataList().forEach((groupItem: LLMConfig.ModelGroup) => {
-          groupItem.value?.forEach((modelItem: LLMConfig.ModelItem) => {
-            const editModel = param.editConfig?.modelList?.find((editGroup) => {
-              return editGroup.name === groupItem.name
-            })?.value?.find((editModel) => {
-              return editModel.id === modelItem.id
-            })
-            if (editModel != undefined) {
-              modelItem.enabled = editModel.enabled
-            } else {
-              modelItem.enabled = false // 如果没有找到编辑的模型，默认关闭
-            }
-          })
-        })
+        // this.modelListChatDataSource.getDataList().forEach((groupItem: LLMConfig.ModelGroup) => {
+        //   groupItem.value?.forEach((modelItem: LLMConfig.ModelItem) => {
+        //     const editModel = param.editConfig?.modelList?.find((editGroup) => {
+        //       return editGroup.name === groupItem.name
+        //     })?.value?.find((editModel) => {
+        //       return editModel.id === modelItem.id
+        //     })
+        //     if (editModel != undefined) {
+        //       modelItem.enabled = editModel.enabled
+        //     } else {
+        //       modelItem.enabled = false // 如果没有找到编辑的模型，默认关闭
+        //     }
+        //   })
+        // })
+        this.modelListChatDataSource.pushList(param.editConfig.modelList ?? [])
         this.modelListChatDataSource.notifyDataReload()
       } else {
         // 如果没有编辑的配置，使用默认配置
         this.alias = $r('app.string.llm_alias_default')
         this.baseUrl = this.config?.properties?.baseUrl?.default ?? ""
         this.apiKey = this.config?.properties?.apikey?.default ?? ""
+
+        // 默认列表
+        const configList = this.config?.properties?.model?.list ?? []
+        this.modelListChatDataSource.pushList(deepClone(configList))
       }
     } else {
       // 新增模型，使用默认配置
       this.alias = $r('app.string.llm_alias_default')
       this.baseUrl = this.config?.properties?.baseUrl?.default ?? ""
       this.apiKey = this.config?.properties?.apikey?.default ?? ""
+      // 默认列表
+      const configList = this.config?.properties?.model?.list ?? []
+      this.modelListChatDataSource.pushList(deepClone(configList))
     }
   }
 
@@ -315,28 +321,29 @@ export struct ModelAddAndEditPage {
     const userConfig = new LLMUserConfig()
     userConfig.brandId = this.config?.id ?? 0
     userConfig.brandName = this.config?.brand ?? ""
-    userConfig.baseUrl = this.getRealBaseUrl()
+    userConfig.baseUrl = this.baseUrl
     userConfig.apiKey = this.apiKey
     userConfig.alias = stringUtil.getString(this.alias)
-    userConfig.modelList = []
+    userConfig.modelList = this.modelListChatDataSource.getDataList()
 
-    this.modelListChatDataSource.getDataList().forEach((groupItem => {
-      const modelGroup = new LLMUserModelGroup()
-      modelGroup.name = groupItem.name
-      modelGroup.value = []
-      groupItem.value?.forEach(modelItem => {
-        if (modelItem.enabled === false) {
-          return
-        }
-        const model = new LLMUserModelItem()
-        model.id = modelItem.id
-        model.type = modelItem.type
-        model.name = modelItem.name
-        model.enabled = modelItem.enabled
-        modelGroup.value?.push(model)
-      })
-      userConfig.modelList?.push(modelGroup)
-    }))
+    // this.modelListChatDataSource.getDataList().forEach((groupItem => {
+    //   const modelGroup: LLMConfig.ModelGroup = {}
+    //   modelGroup.name = groupItem.name
+    //   modelGroup.value = []
+    //   groupItem.value?.forEach(modelItem => {
+    //     if (modelItem.enabled === false) {
+    //       return
+    //     }
+    //     const model: LLMConfig.ModelItem = {
+    //       id: modelItem.id
+    //     }
+    //     model.type = modelItem.type
+    //     model.name = modelItem.name
+    //     model.enabled = modelItem.enabled
+    //     modelGroup.value?.push(model)
+    //   })
+    //   userConfig.modelList?.push(modelGroup)
+    // }))
 
     // 新增模型
     LLMUserConfigTBUtil.getInstance().insert(userConfig)
@@ -356,28 +363,29 @@ export struct ModelAddAndEditPage {
     const userConfig = this.editConfig!!
     userConfig.brandId = this.config?.id ?? 0
     userConfig.brandName = this.config?.brand ?? ""
-    userConfig.baseUrl = this.getRealBaseUrl()
+    userConfig.baseUrl = this.baseUrl
     userConfig.apiKey = this.apiKey
     userConfig.alias = stringUtil.getString(this.alias)
-    userConfig.modelList = []
+    userConfig.modelList = this.modelListChatDataSource.getDataList()
 
-    this.modelListChatDataSource.getDataList().forEach((groupItem => {
-      const modelGroup = new LLMUserModelGroup()
-      modelGroup.name = groupItem.name
-      modelGroup.value = []
-      groupItem.value?.forEach(modelItem => {
-        if (modelItem.enabled === false) {
-          return
-        }
-        const model = new LLMUserModelItem()
-        model.id = modelItem.id
-        model.type = modelItem.type
-        model.name = modelItem.name
-        model.enabled = modelItem.enabled
-        modelGroup.value?.push(model)
-      })
-      userConfig.modelList?.push(modelGroup)
-    }))
+    // this.modelListChatDataSource.getDataList().forEach((groupItem => {
+    //   const modelGroup: LLMConfig.ModelGroup = {}
+    //   modelGroup.name = groupItem.name
+    //   modelGroup.value = []
+    //   groupItem.value?.forEach(modelItem => {
+    //     if (modelItem.enabled === false) {
+    //       return
+    //     }
+    //     const model: LLMConfig.ModelItem = {
+    //       'id': modelItem.id
+    //     }
+    //     model.type = modelItem.type
+    //     model.name = modelItem.name
+    //     model.enabled = modelItem.enabled
+    //     modelGroup.value?.push(model)
+    //   })
+    //   userConfig.modelList?.push(modelGroup)
+    // }))
     LLMUserConfigTBUtil.getInstance().insert(userConfig)
       .then((id) => {
         log.info(`ModelAddAndEditPage: edit, update success, id: ${id}`)

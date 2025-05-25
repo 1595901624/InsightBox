@@ -107,7 +107,7 @@ export namespace LLMConfig {
     /**
      * 模型列表
      */
-    list?: ModelItem[];
+    list?: ModelGroup[];
   }
 
   export interface ModelGroup extends Base {
