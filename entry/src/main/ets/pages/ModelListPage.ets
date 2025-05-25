@@ -42,7 +42,7 @@ export struct ModelListPage {
 
 
         List() {
-          ForEach(this.llmUserConfigList ?? [], (item: LLMUserConfig) => {
+          ForEach(this.llmUserConfigList ?? [], (item: LLMUserConfig, index: number) => {
             ListItem() {
               // Text(item.id + '--' + item.brandName)
               Row() {
@@ -96,6 +96,14 @@ export struct ModelListPage {
                 })
               })
             }
+            .swipeAction({
+              end: {
+                // index为该ListItem在List中的索引值。
+                builder: () => {
+                  this.ListItemEnd(item, index)
+                },
+              }
+            }) // 设置侧滑属性.
             .padding({
               start: LengthMetrics.vp(20),
               end: LengthMetrics.vp(20)
@@ -157,6 +165,29 @@ export struct ModelListPage {
           })
       }
     }
+  }
+
+  @Builder
+  ListItemEnd(llmUserConfig: LLMUserConfig, index: number) {
+    // 构建尾端滑出组件
+    Button({ type: ButtonType.Circle }) {
+      Image($r("app.media.icon_svg_trash"))
+        .width(30)
+        .height(30)
+    }
+    .margin({
+      start: LengthMetrics.vp(8)
+    })
+    .onClick(() => {
+      this.llmUserConfigList.splice(index, 1);
+      LLMUserConfigTBUtil.getInstance().delete(llmUserConfig.id ?? -1)
+        .then(() => {
+          log.info('Delete success:', JSON.stringify(this.llmUserConfigList, null, 2));
+        })
+        .catch((error: Error) => {
+          log.error('Error deleting data:', error);
+        });
+    })
   }
 
   onPageShow(): void {

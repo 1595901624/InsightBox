@@ -22,7 +22,7 @@ export class LLMUserConfigTBUtil {
   queryAll(): Promise<LLMUserConfig[]> {
     return DBHelper
       .getDaoSession()
-      .getBaseDao<LLMUserConfig, string>(LLMUserConfig)
+      .getBaseDao<LLMUserConfig, number>(LLMUserConfig)
       .queryBuilder()
       .list()
   }
@@ -34,7 +34,18 @@ export class LLMUserConfigTBUtil {
   insertOrReplace(llmUserConfig: LLMUserConfig): Promise<number> {
     return DBHelper
       .getDaoSession()
-      .getBaseDao<LLMUserConfig, string>(LLMUserConfig)
+      .getBaseDao<LLMUserConfig, number>(LLMUserConfig)
       .insertOrReplace(llmUserConfig)
+  }
+
+  /**
+   * 删除数据
+   * @param id
+   */
+  delete(id: number): Promise<void> {
+    return DBHelper
+      .getDaoSession()
+      .getBaseDao<LLMUserConfig, number>(LLMUserConfig)
+      .deleteByKeyAsync(id)
   }
 }
