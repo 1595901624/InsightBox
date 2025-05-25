@@ -19,7 +19,7 @@ struct Index {
     Column() {
       // 使用HMNavigation容器
       HMNavigation({
-        navigationId: 'mainNavigation', homePageUrl: PageConstant.PAGE_CHAT,
+        navigationId: PageConstant.NAVIGATION_ID_MAIN, homePageUrl: PageConstant.PAGE_CHAT,
         options: {
           standardAnimator: HMDefaultGlobalAnimator.STANDARD_ANIMATOR,
           dialogAnimator: HMDefaultGlobalAnimator.DIALOG_ANIMATOR,

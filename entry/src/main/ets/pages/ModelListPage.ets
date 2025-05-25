@@ -108,12 +108,14 @@ export struct ModelListPage {
           .shadow(ShadowStyle.OUTER_FLOATING_SM)
           .borderRadius(24)
           .onClick(() => {
-            // 临时跳转
+            // HMRouterMgr.push({
+            //   pageUrl: PageConstant.PAGE_MODEL_ADD_EDIT,
+            //   param: {
+            //     type: 'add'
+            //   } as ModelAddAndEditPageParam
+            // })
             HMRouterMgr.push({
-              pageUrl: PageConstant.PAGE_MODEL_ADD_EDIT,
-              param: {
-                type: 'add'
-              } as ModelAddAndEditPageParam
+              pageUrl: PageConstant.PAGE_MODEL_PROVIDER,
             })
           })
           .stateStyles({

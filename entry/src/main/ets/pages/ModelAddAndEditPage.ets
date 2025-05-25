@@ -38,7 +38,7 @@ export interface ModelAddAndEditPageParam {
 export struct ModelAddAndEditPage {
   @Local type: 'add' | 'edit' = 'add'
   private brandId: number = 0
-  // 当前添加或者编辑的模型配置
+  // 当前要添加的模型配置
   @Local private config: LLMConfig.Config | undefined = undefined
   // 模型的 baseUrl
   @Local private baseUrl: string = ""
@@ -349,7 +349,7 @@ export struct ModelAddAndEditPage {
     LLMUserConfigTBUtil.getInstance().insert(userConfig)
       .then((id: number) => {
         log.info(`ModelAddAndEditPage: create, insert success, id: ${id}`)
-        HMRouterMgr.pop()
+        HMRouterMgr.getPathStack(PageConstant.NAVIGATION_ID_MAIN)?.popToName(PageConstant.PAGE_MODEL_LIST)
       })
       .catch((error: Error) => {
         log.error(`ModelAddAndEditPage: create, insert error, error: ${error?.message}\n${error?.stack}`)

@@ -17,6 +17,10 @@
       "value": "添加模型"
     },
     {
+      "name": "llm_model_provider",
+      "value": "模型提供商"
+    },
+    {
       "name": "llm_add_any",
       "value": "添加 %s 模型"
     },

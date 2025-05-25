@@ -7,4 +7,8 @@ export class PageConstant {
   static readonly PAGE_ABOUT = '/pages/AboutPage';
   static readonly PAGE_MODEL_LIST = '/pages/ModelListPage';
   static readonly PAGE_MODEL_ADD_EDIT = '/pages/ModelAddAndEditPage';
+  static readonly PAGE_MODEL_PROVIDER = '/pages/ModelProviderPage';
+
+  // NavigationId
+  static readonly NAVIGATION_ID_MAIN = 'mainNavigation';
 }
