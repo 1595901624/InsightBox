@@ -18,7 +18,17 @@ export class DBHelper extends OpenHelper {
   }
 
   static getDaoSession(): DaoSession {
+    if (DBHelper.daoSession === undefined) {
+      throw new Error('DBHelper not initialized')
+    }
     return DBHelper.daoSession!
+  }
+
+  static async getDaoSessionAsync(): Promise<DaoSession> {
+    if (DBHelper.daoSession === undefined) {
+      await DBHelper.init()
+    }
+    return Promise.resolve(DBHelper.daoSession!)
   }
 
   onUpgradeDatabase(db: Database, oldVersion: number, newVersion: number): Promise<void> {

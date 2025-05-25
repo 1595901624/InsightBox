@@ -21,10 +21,13 @@ export class LLMUserConfigTBUtil {
    */
   queryAll(): Promise<LLMUserConfig[]> {
     return DBHelper
-      .getDaoSession()
-      .getBaseDao<LLMUserConfig, number>(LLMUserConfig)
-      .queryBuilder()
-      .list()
+      .getDaoSessionAsync()
+      .then((daoSession) => {
+        return daoSession
+          .getBaseDao<LLMUserConfig, number>(LLMUserConfig)
+          .queryBuilder()
+          .list();
+      })
   }
 
   /**
@@ -33,9 +36,12 @@ export class LLMUserConfigTBUtil {
    */
   insertOrReplace(llmUserConfig: LLMUserConfig): Promise<number> {
     return DBHelper
-      .getDaoSession()
-      .getBaseDao<LLMUserConfig, number>(LLMUserConfig)
-      .insertOrReplace(llmUserConfig)
+      .getDaoSessionAsync()
+      .then((daoSession) => {
+        return daoSession
+          .getBaseDao<LLMUserConfig, number>(LLMUserConfig)
+          .insertOrReplace(llmUserConfig);
+      })
   }
 
   /**
@@ -44,8 +50,14 @@ export class LLMUserConfigTBUtil {
    */
   delete(id: number): Promise<void> {
     return DBHelper
-      .getDaoSession()
-      .getBaseDao<LLMUserConfig, number>(LLMUserConfig)
-      .deleteByKeyAsync(id)
+      .getDaoSessionAsync()
+      .then((daoSession) => {
+        return daoSession
+          .getBaseDao<LLMUserConfig, number>(LLMUserConfig)
+          .deleteByKeyAsync(id);
+      })
+    // .getDaoSession()
+    // .getBaseDao<LLMUserConfig, number>(LLMUserConfig)
+    // .deleteByKeyAsync(id)
   }
 }

@@ -1,4 +1,4 @@
-import { HMRouter } from '@hadss/hmrouter';
+import { HMLifecycleState, HMRouter, HMRouterMgr } from '@hadss/hmrouter';
 import { ChatItemComponent } from '../component/ChatItemComponent';
 import { PageConstant } from '../constant/PageConstant';
 import { ChatDataSource } from '../datasource/ChatDataSource';
@@ -14,6 +14,10 @@ import { ChatStatus } from '../model/ChatStatus';
 import { ChatMessageType } from '../model/ChatMessageType';
 import { stringUtil } from '../util/StringUtil';
 import { SideBottomComponent } from '../component/SideBottomComponent';
+import { LLMUserConfig } from '../db/entity/LLMUserConfig';
+import { LLMUserConfigTBUtil } from '../db/LLMUserConfigTBUtil';
+import { log } from '../util/LogUtil';
+import { LLMConfig } from '../config/LLMConfig';
 
 @HMRouter({ pageUrl: PageConstant.PAGE_CHAT })
 @ComponentV2
@@ -27,13 +31,20 @@ export struct ChatPage {
   private drawerLayoutController: DrawerLayoutController = new DrawerLayoutController()
   // 聊天状态
   private chatStatus: ChatStatus = ChatStatus.Ready
+  // 用户配置列表
+  @Local private llmUserConfigList: LLMUserConfig[] = []
 
   aboutToAppear(): void {
+    HMRouterMgr.getCurrentLifecycleOwner()?.addObserver(HMLifecycleState.onShown, () => {
+      this.onPageShow()
+    })
     this.sseGateway.setListener(this.sseListener)
     this.getUIContext().setKeyboardAvoidMode(KeyboardAvoidMode.RESIZE);
+    this.onPageShow()
   }
 
   aboutToDisappear(): void {
+    HMRouterMgr.getCurrentLifecycleOwner()?.removeObserver(HMLifecycleState.onShown)
     this.getUIContext().setKeyboardAvoidMode(KeyboardAvoidMode.OFFSET);
   }
 
@@ -55,6 +66,19 @@ export struct ChatPage {
         }
       })
     }
+  }
+
+  onPageShow(): void {
+    LLMUserConfigTBUtil.getInstance().queryAll()
+      .then((llmUserConfigList) => {
+        this.llmUserConfigList = llmUserConfigList;
+        // 处理查询结果
+        log.info('Query result:', JSON.stringify(llmUserConfigList, null, 2));
+      })
+      .catch((error: Error) => {
+        // 处理错误
+        log.error('Error querying data:', error);
+      });
   }
 
   /**
@@ -207,6 +231,7 @@ export struct ChatPage {
             anchor: '__container__',
           },
         })
+        .bindMenu(this.ModelSelectMenu)
 
       Image($r("app.media.icon_svg_arrow_end"))
         .width(16)
@@ -232,6 +257,41 @@ export struct ChatPage {
   @Builder
   SideBar() {
 
+  }
+
+  @Builder
+  ModelSelectMenu() {
+    Menu() {
+      ForEach(this.llmUserConfigList, (item: LLMUserConfig, index: number) => {
+        MenuItemGroup({
+          header: item.alias + "(" + item.brandName + ")",
+        }) {
+          ForEach(this.getMenuModelItemList(item.modelList), (model: LLMConfig.ModelGroup, index: number) => {
+            MenuItem({
+              content: model.name,
+            })
+          })
+        }
+      })
+    }
+  }
+
+  /**
+   * 将所有分组的模型列表拆分为菜单项
+   * @param group
+   * @returns
+   */
+  getMenuModelItemList(group: LLMConfig.ModelGroup[] | undefined): LLMConfig.ModelItem[] {
+    if (group === undefined) {
+      return []
+    }
+    const modelList: LLMConfig.ModelItem[] = []
+    group.forEach((item: LLMConfig.ModelGroup) => {
+      item.value?.forEach((model: LLMConfig.ModelItem) => {
+        modelList.push(model)
+      })
+    })
+    return modelList
   }
 
   private sendMessage(msg: string) {
