@@ -64,5 +64,81 @@
         ]
       }
     }
+  },
+  {
+    "id": 1,
+    "brand": "DeepSeek",
+    "enabled": true,
+    "properties": {
+      "apikey": {
+        "title": "%apikey.title%",
+        "description": "%apikey.description%",
+        "default": "",
+        "url": "https://www.deepseek.ai/"
+      },
+      "baseUrl": {
+        "title": "%baseUrl.title%",
+        "description": "%baseUrl.description%",
+        "default": "https://api.deepseek.ai"
+      },
+      "model": {
+        "title": "%model.title%",
+        "description": "%model.description%",
+        "list": [
+          {
+            "name": "DeepSeek",
+            "description": "%model.deepseek.description%",
+            "enabled": true,
+            "value": [
+              {
+                "id": "deepseek-3.5",
+                "name": "deepseek-3.5",
+                "type": 1,
+                "description": "%model.deepseek-3.5.description%",
+                "enabled": true
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": 2,
+    "brand": "Mistral",
+    "enabled": true,
+    "properties": {
+      "apikey": {
+        "title": "%apikey.title%",
+        "description": "%apikey.description%",
+        "default": "",
+        "url": "https://www.mistral.ai/"
+      },
+      "baseUrl": {
+        "title": "%baseUrl.title%",
+        "description": "%baseUrl.description%",
+        "default": "https://api.mistral.ai"
+      },
+      "model": {
+        "title": "%model.title%",
+        "description": "%model.description%",
+        "list": [
+          {
+            "name": "Mistral",
+            "description": "%model.mistral.description%",
+            "enabled": true,
+            "value": [
+              {
+                "id": "mistral-7b",
+                "name": "mistral-7b",
+                "type": 1,
+                "description": "%model.mistral-7b.description%",
+                "enabled": true
+              }
+            ]
+          }
+        ]
+      }
+    }
   }
 ]
