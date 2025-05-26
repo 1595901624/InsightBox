@@ -15,6 +15,10 @@
     {
       "name": "chat_assistant_reasoning",
       "value": "正在推理中..."
+    },
+    {
+      "name": "please_add_or_enable_model_config",
+      "value": "请先添加或者启用模型配置"
     }
   ]
 }

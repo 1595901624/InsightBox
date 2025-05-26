@@ -5,7 +5,7 @@ import { ChatDataSource } from '../datasource/ChatDataSource';
 import { ChatMessage } from '../model/ChatMessage';
 import { ChatInputView } from '../widget/ChatInputView';
 import { SafeAreaLayout } from '../widget/SafeAreaLayout';
-import { KeyboardAvoidMode, LengthMetrics } from '@kit.ArkUI';
+import { KeyboardAvoidMode, LengthMetrics, promptAction } from '@kit.ArkUI';
 import { SSEGateway } from '../http/gateway/SSEGateway';
 import { SSEListener } from '../http/gateway/SSEListener';
 import { LLMChunk } from '../model/LLMChunk';
@@ -22,8 +22,6 @@ import { LLMConfig } from '../config/LLMConfig';
 @HMRouter({ pageUrl: PageConstant.PAGE_CHAT })
 @ComponentV2
 export struct ChatPage {
-  // 模型名称
-  @Local private modelName: ResourceStr = $r('app.string.app_name')
   private scroller = new ListScroller()
   private dataSource: ChatDataSource = new ChatDataSource();
   private sseGateway: SSEGateway = new SSEGateway();
@@ -33,6 +31,10 @@ export struct ChatPage {
   private chatStatus: ChatStatus = ChatStatus.Ready
   // 用户配置列表
   @Local private llmUserConfigList: LLMUserConfig[] = []
+  // 是否显示模型配置菜单
+  @Local private showModelConfigMenu: boolean = false;
+  // 当前选中的模型
+  @Local private currentSelectedModel: LLMConfig.ModelItem | undefined = undefined;
 
   aboutToAppear(): void {
     HMRouterMgr.getCurrentLifecycleOwner()?.addObserver(HMLifecycleState.onShown, this.onPageShow)
@@ -69,7 +71,10 @@ export struct ChatPage {
   onPageShow = () => {
     LLMUserConfigTBUtil.getInstance().queryAll()
       .then((llmUserConfigList) => {
-        this.llmUserConfigList = llmUserConfigList;
+        this.llmUserConfigList = llmUserConfigList.filter((item) => {
+          // 过滤掉未启用的配置
+          return item.enable === 1;
+        });
         // 处理查询结果
         log.info('Query result:', JSON.stringify(llmUserConfigList, null, 2));
       })
@@ -215,7 +220,7 @@ export struct ChatPage {
           },
         })
 
-      Text(this.modelName)
+      Text(this.currentSelectedModel == undefined ? $r('app.string.app_name') : this.currentSelectedModel.name)
         .fontWeight(FontWeight.Bold)
         .fontSize($r('app.float.font_size_title'))
         .id('title')
@@ -229,7 +234,20 @@ export struct ChatPage {
             anchor: '__container__',
           },
         })
-        .bindMenu(this.ModelSelectMenu)
+        .onClick(() => {
+          if (this.llmUserConfigList.length > 0) {
+            this.showModelConfigMenu = !this.showModelConfigMenu
+          } else {
+            promptAction.showToast({
+              message: $r('app.string.please_add_or_enable_model_config'),
+            })
+          }
+        })
+        .bindMenu(this.showModelConfigMenu, this.ModelSelectMenu, {
+          onDisappear: () => {
+            this.showModelConfigMenu = false
+          },
+        })
 
       Image($r("app.media.icon_svg_arrow_end"))
         .width(16)
@@ -264,10 +282,14 @@ export struct ChatPage {
         MenuItemGroup({
           header: item.alias + "(" + item.brandName + ")",
         }) {
-          ForEach(this.getMenuModelItemList(item.modelList), (model: LLMConfig.ModelGroup, index: number) => {
+          ForEach(this.getMenuModelItemList(item.modelList), (model: LLMConfig.ModelItem, index: number) => {
             MenuItem({
               content: model.name,
             })
+              .onClick(() => {
+                this.currentSelectedModel = model
+                this.showModelConfigMenu = false
+              })
           })
         }
       })
