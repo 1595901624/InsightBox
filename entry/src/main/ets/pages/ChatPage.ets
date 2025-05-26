@@ -35,16 +35,14 @@ export struct ChatPage {
   @Local private llmUserConfigList: LLMUserConfig[] = []
 
   aboutToAppear(): void {
-    HMRouterMgr.getCurrentLifecycleOwner()?.addObserver(HMLifecycleState.onShown, () => {
-      this.onPageShow()
-    })
+    HMRouterMgr.getCurrentLifecycleOwner()?.addObserver(HMLifecycleState.onShown, this.onPageShow)
     this.sseGateway.setListener(this.sseListener)
     this.getUIContext().setKeyboardAvoidMode(KeyboardAvoidMode.RESIZE);
-    this.onPageShow()
+    // this.onPageShow()
   }
 
   aboutToDisappear(): void {
-    HMRouterMgr.getCurrentLifecycleOwner()?.removeObserver(HMLifecycleState.onShown)
+    HMRouterMgr.getCurrentLifecycleOwner()?.removeObserver(HMLifecycleState.onShown, this.onPageShow)
     this.getUIContext().setKeyboardAvoidMode(KeyboardAvoidMode.OFFSET);
   }
 
@@ -68,7 +66,7 @@ export struct ChatPage {
     }
   }
 
-  onPageShow(): void {
+  onPageShow = () => {
     LLMUserConfigTBUtil.getInstance().queryAll()
       .then((llmUserConfigList) => {
         this.llmUserConfigList = llmUserConfigList;

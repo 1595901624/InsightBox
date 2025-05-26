@@ -12,6 +12,7 @@ export class ModelListTypeConvert extends PropertyConverter<LLMUserModelGroup[],
 }
 
 @Entity("LLMUserConfig")
+@Observed
 export class LLMUserConfig {
   /**
    * 配置id(唯一)

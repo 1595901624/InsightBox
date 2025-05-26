@@ -20,13 +20,11 @@ export struct ModelListPage {
   @Local private llmUserConfigList: LLMUserConfig[] = []
 
   aboutToAppear(): void {
-    HMRouterMgr.getCurrentLifecycleOwner()?.addObserver(HMLifecycleState.onShown, () => {
-      this.onPageShow()
-    })
+    HMRouterMgr.getCurrentLifecycleOwner()?.addObserver(HMLifecycleState.onShown, this.onPageShow)
   }
 
   aboutToDisappear(): void {
-    HMRouterMgr.getCurrentLifecycleOwner()?.removeObserver(HMLifecycleState.onShown)
+    HMRouterMgr.getCurrentLifecycleOwner()?.removeObserver(HMLifecycleState.onShown, this.onPageShow)
   }
 
   build() {
@@ -190,7 +188,7 @@ export struct ModelListPage {
     })
   }
 
-  onPageShow(): void {
+  onPageShow = () => {
     LLMUserConfigTBUtil.getInstance().queryAll()
       .then((llmUserConfigList) => {
         this.llmUserConfigList = llmUserConfigList;
