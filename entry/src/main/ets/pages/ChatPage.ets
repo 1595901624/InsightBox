@@ -18,6 +18,7 @@ import { LLMUserConfig } from '../db/entity/LLMUserConfig';
 import { LLMUserConfigTBUtil } from '../db/LLMUserConfigTBUtil';
 import { log } from '../util/LogUtil';
 import { LLMConfig } from '../config/LLMConfig';
+import { LLMConfigUtil } from '../config/LLMConfigUtil';
 
 @HMRouter({ pageUrl: PageConstant.PAGE_CHAT })
 @ComponentV2
@@ -35,6 +36,8 @@ export struct ChatPage {
   @Local private showModelConfigMenu: boolean = false;
   // 当前选中的模型
   @Local private currentSelectedModel: LLMConfig.ModelItem | undefined = undefined;
+  // 当前选中的用户配置
+  @Local private currentSelectUserConfig: LLMUserConfig | undefined = undefined;
 
   aboutToAppear(): void {
     HMRouterMgr.getCurrentLifecycleOwner()?.addObserver(HMLifecycleState.onShown, this.onPageShow)
@@ -287,6 +290,7 @@ export struct ChatPage {
               content: model.name,
             })
               .onClick(() => {
+                this.currentSelectUserConfig = item
                 this.currentSelectedModel = model
                 this.showModelConfigMenu = false
               })
@@ -308,6 +312,9 @@ export struct ChatPage {
     const modelList: LLMConfig.ModelItem[] = []
     group.forEach((item: LLMConfig.ModelGroup) => {
       item.value?.forEach((model: LLMConfig.ModelItem) => {
+        if (model.enabled == false) {
+          return
+        }
         modelList.push(model)
       })
     })
@@ -316,7 +323,11 @@ export struct ChatPage {
 
   private sendMessage(msg: string) {
     this.dataSource.addUserMessage(msg)
-    this.sseGateway.postStreamRequest("http://xxxxxxxx:3000/v1/chat/completions", this.dataSource.getContextMessage())
+    this.sseGateway.postStreamRequest(
+      LLMConfigUtil.getInstance().getRealBaseUrl(this.currentSelectUserConfig?.baseUrl),
+      this.currentSelectUserConfig?.apiKey,
+      this.currentSelectedModel?.id ?? "",
+      this.dataSource.getContextMessage())
   }
 
   /**

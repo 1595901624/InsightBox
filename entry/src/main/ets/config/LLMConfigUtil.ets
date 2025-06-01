@@ -94,4 +94,24 @@ export class LLMConfigUtil {
     });
     return enabledModelList ?? [];
   }
+
+  /**
+   * 获取 LLM 的真实基础 URL
+   * @param baseUrl 基础 URL
+   * @returns 真实的基础 URL
+   */
+  getRealBaseUrl(baseUrl?: string): string {
+    if (baseUrl == null || baseUrl === "") {
+      return "";
+    }
+    let realBaseUrl = ""
+    if (baseUrl.endsWith("/")) {
+      realBaseUrl = baseUrl.substring(0, baseUrl.length - 1) + "/chat/completions"
+    } else if (baseUrl.endsWith("#")) {
+      realBaseUrl = baseUrl.substring(0, baseUrl.length - 1)
+    } else {
+      realBaseUrl = baseUrl + "/v1/chat/completions"
+    }
+    return realBaseUrl
+  }
 }

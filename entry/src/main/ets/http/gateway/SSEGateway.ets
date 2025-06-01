@@ -19,8 +19,9 @@ export class SSEGateway extends HttpClient {
     this.sseListener = listener
   }
 
-  postStreamRequest(url: string, contextMessage: LLMChoiceMessage[]) {
-    url = "https://text.pollinations.ai/openai/chat/completions"
+  postStreamRequest(url: string, apikey: string | undefined, modelId: string, contextMessage: LLMChoiceMessage[]) {
+    // url = "https://text.pollinations.ai/openai/chat/completions"
+    // modelId = "openai-large"
 
     const onMessage = (msg: LLMResult) => {
       this.sseListener?.onMessage?.(msg)
@@ -79,12 +80,12 @@ export class SSEGateway extends HttpClient {
     this._request(url, {
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer xxx"
+        "Authorization": "Bearer " + apikey ?? '',
       },
       method: 'POST',
       destination: destination,
       data: {
-        "model": "openai-large",
+        "model": modelId,
         // "messages": [
         //   {
         //     "role": "system",

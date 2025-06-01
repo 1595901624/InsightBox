@@ -140,5 +140,37 @@
         ]
       }
     }
+  },
+  {
+    "id": 3,
+    "brand": "Pollinations",
+    "enabled": true,
+    "properties": {
+      "baseUrl": {
+        "title": "%baseUrl.title%",
+        "description": "%baseUrl.description%",
+        "default": "https://text.pollinations.ai/openai/chat/completions#"
+      },
+      "model": {
+        "title": "%model.title%",
+        "description": "%model.description%",
+        "list": [
+          {
+            "name": "default",
+            "description": "%model.pollinations.description%",
+            "enabled": true,
+            "value": [
+              {
+                "id": "openai-large",
+                "name": "openai-large",
+                "type": 1,
+                "description": "openai-gpt-4.1",
+                "enabled": true
+              }
+            ]
+          }
+        ]
+      }
+    }
   }
 ]
